@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevRev SupportIQ — Solutions Engineer Rapid Prototype</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="brand-logo">
+        <div class="logo-icon">D</div>
+        <div class="logo-text">
+          <span class="logo-title">DevRev <strong>SupportIQ</strong></span>
+          <span class="logo-tag">Solutions Prototype v1.0</span>
+        </div>
+      </div>
+      <div class="scenario-badge">
+        <span class="dot live-dot"></span>
+        <span>Scenario: Offline Mobile Order Processing</span>
+      </div>
+    </div>
+    
+    <div class="nav-right">
+      <button class="btn btn-secondary" onclick="openPresentationModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Walkthrough Slides
+      </button>
+      <button class="btn btn-primary" onclick="openCreateModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Support Record
+      </button>
+    </div>
+  </header>
+
+  <!-- Main App Shell -->
+  <main class="app-shell">
+    
+    <!-- Hero / KPI Summary Cards -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Total Records</span>
+          <span class="metric-icon total-icon">📊</span>
+        </div>
+        <div class="metric-value" id="kpi-total">--</div>
+        <div class="metric-sub">Active in support catalog</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Open</span>
+          <span class="metric-icon open-icon">⚡</span>
+        </div>
+        <div class="metric-value text-amber" id="kpi-open">--</div>
+        <div class="metric-sub">Awaiting triage / assignment</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">In Progress</span>
+          <span class="metric-icon progress-icon">🛠️</span>
+        </div>
+        <div class="metric-value text-blue" id="kpi-progress">--</div>
+        <div class="metric-sub">Eng squad actively investigating</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">P0 Blockers</span>
+          <span class="metric-icon alert-icon">🚨</span>
+        </div>
+        <div class="metric-value text-red" id="kpi-p0">--</div>
+        <div class="metric-sub">Immediate revenue impact</div>
+      </div>
+
+      <div class="metric-card highlight-card">
+        <div class="metric-header">
+          <span class="metric-title">Revenue At Risk</span>
+          <span class="metric-icon money-icon">💼</span>
+        </div>
+        <div class="metric-value text-green" id="kpi-revenue">$0</div>
+        <div class="metric-sub">Enterprise customer ARR tied</div>
+      </div>
+    </section>
+
+    <!-- Filter & Search Toolbar -->
+    <section class="toolbar-card">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search by ticket key, title, customer, or keywords..." oninput="debounceSearch()">
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-item">
+          <label for="statusFilter">Status:</label>
+          <select id="statusFilter" onchange="fetchRecords()">
+            <option value="All">All Statuses</option>
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="priorityFilter">Priority:</label>
+          <select id="priorityFilter" onchange="fetchRecords()">
+            <option value="All">All Priorities</option>
+            <option value="P0-Blocker">P0 - Blocker</option>
+            <option value="P1-High">P1 - High</option>
+            <option value="P2-Medium">P2 - Medium</option>
+            <option value="P3-Low">P3 - Low</option>
+          </select>
+        </div>
+
+        <button class="btn btn-ghost" onclick="resetFilters()">Reset</button>
+      </div>
+    </section>
+
+    <!-- Records Table Container -->
+    <section class="table-card">
+      <div class="table-header">
+        <div>
+          <h2 class="section-title">Support &amp; Defect Records</h2>
+          <p class="section-sub">Live simulated feed connected to SQLite backend (`GET /api/records`)</p>
+        </div>
+        <div class="table-actions">
+          <span class="record-counter" id="recordCount">Loading records...</span>
+          <button class="btn btn-icon" onclick="fetchRecords()" title="Refresh records">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 10%;">Key</th>
+              <th style="width: 32%;">Summary &amp; Customer</th>
+              <th style="width: 11%;">Priority</th>
+              <th style="width: 12%;">Status</th>
+              <th style="width: 13%;">Revenue Risk</th>
+              <th style="width: 12%;">AI Sentiment</th>
+              <th style="width: 10%; text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recordsTableBody">
+            <!-- Dynamically populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== RECORD DETAIL DRAWER/MODAL ==================== -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal-container detail-modal-size">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="tag tag-key" id="modalKey">TICK-101</span>
+          <h3 class="modal-title" id="modalTitle">Record Title</h3>
+        </div>
+        <button class="close-btn" onclick="closeDetailModal()">&times;</button>
+      </div>
+
+      <div class="modal-body grid-2col">
+        <!-- Left: Ticket Content -->
+        <div class="detail-left">
+          <div class="detail-section">
+            <h4 class="detail-subtitle">Description &amp; Customer Context</h4>
+            <p class="detail-text" id="modalDescription">Loading...</p>
+          </div>
+
+          <!-- AI Insights Card -->
+          <div class="ai-card">
+            <div class="ai-card-header">
+              <div class="ai-badge">
+                <span class="ai-sparkle">✨</span>
+                <span>DevRev AI Triage Engine</span>
+              </div>
+              <button class="btn btn-ai" id="runAiTriageBtn" onclick="triggerAiTriage()">
+                Re-Run AI Triage
+              </button>
+            </div>
+            <div class="ai-body">
+              <div class="ai-field">
+                <span class="ai-label">Sentiment Detected:</span>
+                <span id="modalAiSentiment" class="sentiment-pill">Neutral</span>
+              </div>
+              <div class="ai-field">
+                <span class="ai-label">Executive Summary:</span>
+                <p id="modalAiSummary" class="ai-summary-text">Analyzing ticket context...</p>
+              </div>
+              <div class="ai-field">
+                <span class="ai-label">Recommended Action &amp; Work Item Link:</span>
+                <div class="ai-action-box" id="modalAiAction">Linking to roadmap...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audit Activity Log -->
+          <div class="detail-section">
+            <h4 class="detail-subtitle">Audit &amp; Activity Log</h4>
+            <div class="activity-timeline" id="modalTimeline">
+              <!-- Logs populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Metadata & Status Controls -->
+        <div class="detail-right">
+          <div class="meta-box">
+            <h4 class="meta-title">Status Control (`PUT /api/records/:id`)</h4>
+            <div class="status-btn-group">
+              <button class="btn-status-pill status-open" onclick="quickUpdateStatus('Open')">Open</button>
+              <button class="btn-status-pill status-progress" onclick="quickUpdateStatus('In Progress')">In Progress</button>
+              <button class="btn-status-pill status-resolved" onclick="quickUpdateStatus('Resolved')">Resolved</button>
+              <button class="btn-status-pill status-closed" onclick="quickUpdateStatus('Closed')">Closed</button>
+            </div>
+
+            <hr class="meta-divider">
+
+            <div class="meta-field">
+              <span class="meta-label">Customer Account</span>
+              <span class="meta-val font-semibold" id="modalCustomer">--</span>
+            </div>
+
+            <div class="meta-field">
+              <span class="meta-label">Customer Tier</span>
+              <span id="modalTier" class="tier-pill">Enterprise</span>
+            </div>
+
+            <div class="meta-field">
+              <span class="meta-label">Priority Level</span>
+              <span id="modalPriority" class="priority-pill">P0-Blocker</span>
+            </div>
+
+            <div class="meta-field">
+              <span class="meta-label">Category</span>
+              <span class="meta-val" id="modalCategory">Escalation</span>
+            </div>
+
+            <div class="meta-field">
+              <span class="meta-label">Assigned Engineer</span>
+              <span class="meta-val" id="modalAssignee">Alex Rivera</span>
+            </div>
+
+            <div class="meta-field">
+              <span class="meta-label">Revenue Impact</span>
+              <span class="meta-val font-semibold text-green" id="modalRevenue">$84,500</span>
+            </div>
+
+            <div class="meta-field">
+              <span class="meta-label">Created At</span>
+              <span class="meta-val font-mono text-muted" id="modalCreatedAt">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDetailModal()">Close View</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CREATE RECORD MODAL ==================== -->
+  <div class="modal-backdrop" id="createModal">
+    <div class="modal-container create-modal-size">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Create New Support Record</h3>
+          <p class="modal-sub">Posts directly to backend API: <code>POST /api/records</code></p>
+        </div>
+        <button class="close-btn" onclick="closeCreateModal()">&times;</button>
+      </div>
+
+      <form id="createRecordForm" onsubmit="handleCreateRecord(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="formTitle">Record Title / Summary *</label>
+            <input type="text" id="formTitle" required placeholder="e.g. Sales reps unable to complete checkout in offline mode">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="formCustomer">Customer Name *</label>
+              <input type="text" id="formCustomer" required placeholder="e.g. Apex Wholesale Supply Co.">
+            </div>
+
+            <div class="form-group">
+              <label for="formTier">Customer Tier</label>
+              <select id="formTier">
+                <option value="Enterprise">Enterprise ($100k+ ARR)</option>
+                <option value="Mid-Market" selected>Mid-Market ($20k–$100k ARR)</option>
+                <option value="Growth">Growth (&lt; $20k ARR)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="formCategory">Category</label>
+              <select id="formCategory">
+                <option value="Bug">Software Bug / Defect</option>
+                <option value="Escalation">Customer Escalation</option>
+                <option value="Feature Request">Product Feature Request</option>
+                <option value="Inquiry">General Inquiry</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="formPriority">Initial Priority</label>
+              <select id="formPriority">
+                <option value="P0-Blocker">P0 - Blocker</option>
+                <option value="P1-High">P1 - High</option>
+                <option value="P2-Medium" selected>P2 - Medium</option>
+                <option value="P3-Low">P3 - Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="formRevenue">Estimated Revenue Impact ($ USD)</label>
+              <input type="number" id="formRevenue" min="0" step="500" value="0" placeholder="0">
+            </div>
+
+            <div class="form-group">
+              <label for="formAssignee">Assign Technical Lead</label>
+              <input type="text" id="formAssignee" value="Alex Rivera (Staff Solutions Eng)" placeholder="Engineer Name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="formDescription">Detailed Description / Steps to Reproduce *</label>
+            <textarea id="formDescription" rows="4" required placeholder="Provide clear technical context, user impact, environment, or reproduction steps..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submitRecordBtn">Create Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="/static/app.js"></script>
+</body>
+</html>
