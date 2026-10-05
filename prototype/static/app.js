@@ -7,6 +7,29 @@ let searchDebounceTimer = null;
 document.addEventListener("DOMContentLoaded", () => {
   fetchStats();
   fetchRecords();
+
+  // Close modals on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDetailModal();
+      closeCreateModal();
+    }
+  });
+
+  // Close modal when clicking on backdrop
+  const detailModal = document.getElementById("detailModal");
+  if (detailModal) {
+    detailModal.addEventListener("click", (e) => {
+      if (e.target === detailModal) closeDetailModal();
+    });
+  }
+
+  const createModal = document.getElementById("createModal");
+  if (createModal) {
+    createModal.addEventListener("click", (e) => {
+      if (e.target === createModal) closeCreateModal();
+    });
+  }
 });
 
 // Fetch KPI statistics

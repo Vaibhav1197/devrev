@@ -15,12 +15,23 @@ app = Flask(
 # Initialize database on startup
 init_db()
 
-@app.route("/")
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Idempotency-Key"
+    return response
+
+@app.route("/", methods=["GET", "OPTIONS"])
 def index():
+    if request.method == "OPTIONS":
+        return "", 204
     return render_template("index.html")
 
-@app.route("/presentation")
+@app.route("/presentation", methods=["GET", "OPTIONS"])
 def presentation():
+    if request.method == "OPTIONS":
+        return "", 204
     return render_template("presentation.html")
 
 # --- REST API Endpoints ---
