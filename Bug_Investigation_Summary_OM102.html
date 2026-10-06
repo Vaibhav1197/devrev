@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bug Investigation & RCA - Incident OM-102 / INC-49201</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --badge-green: #dcfce7;
+      --badge-green-text: #15803d;
+      --badge-amber: #fef3c7;
+      --badge-amber-text: #b45309;
+      --badge-blue: #dbeafe;
+      --badge-blue-text: #1d4ed8;
+      --badge-red: #fee2e2;
+      --badge-red-text: #b91c1c;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-main);
+      background-color: var(--bg-page);
+      margin: 0;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      padding: 48px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 26px;
+      color: #0f172a;
+      margin-top: 0;
+      margin-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+    }
+    h2 {
+      font-size: 20px;
+      color: #1e293b;
+      margin-top: 36px;
+      margin-bottom: 16px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 16px;
+      color: #334155;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    h4 {
+      font-size: 14px;
+      color: #475569;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+    p, li {
+      font-size: 15px;
+      color: #334155;
+    }
+    ul, ol {
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      background-color: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #0f172a;
+    }
+    pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 20px 0;
+    }
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      color: #f8fafc;
+    }
+    blockquote {
+      border-left: 4px solid var(--primary);
+      margin: 20px 0;
+      padding: 12px 20px;
+      background-color: #eff6ff;
+      border-radius: 0 8px 8px 0;
+      color: #1e3a8a;
+      font-style: italic;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-p0 { background-color: var(--badge-red); color: var(--badge-red-text); }
+    .badge-approved { background-color: var(--badge-green); color: var(--badge-green-text); }
+    .badge-blue { background-color: var(--badge-blue); color: var(--badge-blue-text); }
+    hr {
+      border: 0;
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0;
+    }
+    .footer-note {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bug Investigation Summary &amp; Root Cause Analysis (RCA)</h1>
+<h2>Incident: Duplicate Order Creation on Network Reconnect (Jira: OM-102)</h2>
+<hr>
+<h3>Incident Overview &amp; Metadata</h3>
+<table>
+  <tr>
+    <th>Metadata Field</th>
+    <th>Value</th>
+  </tr>
+  <tr>
+    <td><strong>Incident Reference</strong></td>
+    <td><code>INC-49201</code> / <code>OM-102</code></td>
+  </tr>
+  <tr>
+    <td><strong>Severity Level</strong></td>
+    <td><strong><span class="badge badge-p0">P0 - Blocker (Financial </span>&amp; Fulfillment Impact)</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Date of Incident</strong></td>
+    <td>October 03, 2026</td>
+  </tr>
+  <tr>
+    <td><strong>Impacted Service</strong></td>
+    <td>Mobile Field App (v3.3.2) &amp; Cloud Order Ingestion API (<code>POST /api/v1/orders</code>)</td>
+  </tr>
+  <tr>
+    <td><strong>Investigation Lead</strong></td>
+    <td>Staff Reliability Engineer &amp; Mobile Lead</td>
+  </tr>
+  <tr>
+    <td><strong>Current Status</strong></td>
+    <td><strong>Fix Verified in Staging (Pending v3.4 Release)</strong></td>
+  </tr>
+</table>
+<hr>
+<h2>1. Executive Summary</h2>
+<p>On Friday, October 03, 2026, between 09:15 AM and 01:30 PM CST, 14 field sales representatives operating in suburban distribution facilities reported that single order submissions were duplicating in the backend ERP.</p>
+<p>A total of <strong>38 duplicate orders</strong> were booked, representing <strong>$46,200 in double-allocated inventory</strong> and triggering erroneous automated invoices to 11 enterprise accounts. The warehouse fulfillment system initiated pick-pack-ship operations on 19 of the duplicate orders before the operations team issued an emergency halt.</p>
+<p>The root cause was identified as a missing distributed idempotency check on the backend order ingestion gateway, coupled with an aggressive 15-second client-side HTTP socket timeout on flaky cellular connections. When an outbound HTTP 201 acknowledgment packet dropped over poor cellular coverage, the mobile app retried the order with a newly assigned request payload, causing the backend database to execute a second insertion.</p>
+<hr>
+<h2>2. Incident Timeline</h2>
+<table>
+  <tr>
+    <th>Timestamp (CST)</th>
+    <th>Event / System Activity</th>
+  </tr>
+  <tr>
+    <td><strong>09:18:10</strong></td>
+    <td>Sales rep submits wholesale order (120 cases of SKU-BEV-0012, Value: $1,740) in a low-coverage steel warehouse.</td>
+  </tr>
+  <tr>
+    <td><strong>09:18:14</strong></td>
+    <td>Mobile client connects over 3G cellular; request payload reaches Cloud Gateway.</td>
+  </tr>
+  <tr>
+    <td><strong>09:18:17</strong></td>
+    <td>Backend Postgres database executes transaction and commits Order <code>ORD-88201</code>.</td>
+  </tr>
+  <tr>
+    <td><strong>09:18:25</strong></td>
+    <td>Gateway sends HTTP 201 Created downstream. Tower drops TCP ACK packet due to 85% cellular packet loss.</td>
+  </tr>
+  <tr>
+    <td><strong>09:18:29</strong></td>
+    <td>Mobile HTTP client hits internal 15-second timeout (<code>SocketTimeoutException</code>); connection is severed locally.</td>
+  </tr>
+  <tr>
+    <td><strong>09:18:31</strong></td>
+    <td>Mobile client queue detects unacknowledged transaction and initiates automated retry attempt #2.</td>
+  </tr>
+  <tr>
+    <td><strong>09:18:35</strong></td>
+    <td>Retry request hits Cloud Gateway. Because no distributed idempotency lock was enforced, backend processes request as a novel order, committing duplicate Order <code>ORD-88202</code>.</td>
+  </tr>
+  <tr>
+    <td><strong>10:45:00</strong></td>
+    <td>Customer account manager at Apex Wholesale alerts support after receiving two identical invoices.</td>
+  </tr>
+  <tr>
+    <td><strong>11:15:00</strong></td>
+    <td>Engineering confirms active duplication bug; tags incident as P0 (<code>INC-49201</code>).</td>
+  </tr>
+  <tr>
+    <td><strong>12:00:00</strong></td>
+    <td>Temporary warehouse fulfillment hold placed on all duplicate order manifests.</td>
+  </tr>
+  <tr>
+    <td><strong>15:30:00</strong></td>
+    <td>Root cause isolated in staging; fix implemented in PR #251.</td>
+  </tr>
+</table>
+<hr>
+<h2>3. Technical Root Cause Analysis (The "5 Whys")</h2>
+<pre><code>flowchart TD
+    W1["1. Why did customers receive duplicate invoices?"] --&gt; W2["2. Why were two identical orders committed in the ERP?"]
+    W2 --&gt; W3["3. Why did the mobile client send the identical order twice?"]
+    W3 --&gt; W4["4. Why did the client retry an already completed order?"]
+    W4 --&gt; W5["5. Why did the backend process the retry as a new order?"]
+    W5 --&gt; RC["ROOT CAUSE:\nAbsence of Client-Side UUIDv4 Idempotency Key\nand Server-Side Distributed Redis Lock"]</code></pre>
+<ol><li><strong>Why did customers receive duplicate invoices?</strong></li></ol>
+<p>Two distinct order records with identical line items were created in the primary transactional database within 18 seconds of each other.</p>
+<ol><li><strong>Why were two identical orders committed in the ERP?</strong></li></ol>
+<p>The backend API processed two sequential HTTP requests from the same mobile client without verifying transaction deduplication.</p>
+<ol><li><strong>Why did the mobile client send the order twice?</strong></li></ol>
+<p>The mobile client encountered a <code>SocketTimeoutException</code> while awaiting the server response and immediately triggered an un-throttled queue retry.</p>
+<ol><li><strong>Why did the client retry an order that had already succeeded?</strong></li></ol>
+<p>The server committed the database row, but the return TCP ACK packet was dropped due to high packet loss on the cellular carrier's edge tower. The client had no way to know the server had succeeded.</p>
+<ol><li><strong>Why did the backend not recognize the retry as a duplicate?</strong></li></ol>
+<p>The API endpoint <code>/api/v1/orders</code> lacked support for <code>X-Idempotency-Key</code> headers and relied entirely on server-generated auto-increment IDs (<code>order_id_seq</code>), treating every incoming POST as a discrete intent.</p>
+<hr>
+<h2>4. Code Comparison &amp; Staging Reproduction</h2>
+<h3>Faulty Implementation (Client v3.3.2)</h3>
+<pre><code>// Flawed retry: generates new transaction context on every attempt
+fun submitOrder(order: OrderPayload) {
+    val client = OkHttpClient.Builder()
+        .readTimeout(15, TimeUnit.SECONDS) // Too short for weak cellular!
+        .build()
+
+    val request = Request.Builder()
+        .url("https://api.devrev.com/v1/orders")
+        .post(order.toJsonBody()) // No idempotency key attached
+        .build()
+
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            // Unconditionally retries without deduplication header
+            queueManager.retry(order)
+        }
+        ...
+    })
+}</code></pre>
+<h3>Corrected Implementation (PR #251)</h3>
+<pre><code>// Robust implementation: Persistent UUIDv4 attached to order creation
+fun submitOrderWithIdempotency(order: OrderRecord) {
+    val request = Request.Builder()
+        .url("https://api.devrev.com/v1/orders/sync")
+        .header("X-Idempotency-Key", order.clientUUID) // Client-side immutable UUIDv4
+        .header("X-Client-Timestamp", order.createdAtUtc)
+        .post(order.toCompressedPayload())
+        .build()
+    ...
+}</code></pre>
+<hr>
+<h2>5. Remediation &amp; Preventative Actions</h2>
+<table>
+  <tr>
+    <th>Action Item</th>
+    <th>Owner</th>
+    <th>Target Date</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td><strong>Fix 1: Distributed Redis Lock on Backend</strong>&lt;br&gt;Implement Lua script in Redis enforcing <code>SETNX</code> lock on <code>X-Idempotency-Key</code> with 72-hour cache retention.</td>
+    <td>Backend Lead</td>
+    <td>Oct 04, 2026</td>
+    <td><strong>Completed (PR #251)</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Fix 2: Client-Side UUIDv4 Stamping</strong>&lt;br&gt;Generate collision-resistant UUIDv4 at the exact moment user taps "Place Order" and persist in local SQLite before network call.</td>
+    <td>Mobile Lead</td>
+    <td>Oct 05, 2026</td>
+    <td><strong>Completed (PR #254)</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Fix 3: Socket Timeout Extension &amp; Jitter</strong>&lt;br&gt;Extend mobile socket read timeout from 15s to 45s and apply exponential backoff with full decorrelated jitter.</td>
+    <td>Mobile Lead</td>
+    <td>Oct 06, 2026</td>
+    <td><strong>In Progress (OM-109)</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Fix 4: Automated Chaos Regression Test</strong>&lt;br&gt;Add simulated packet drop test in CI pipeline to verify that 100 duplicate requests result in exactly 1 database commit.</td>
+    <td>QA Lead</td>
+    <td>Oct 06, 2026</td>
+    <td><strong>Completed (OM-116)</strong></td>
+  </tr>
+</table>
+<hr>
+<h2>6. Sign-off &amp; Verification</h2>
+<ul><li><strong>Chaos Test Verification:</strong> Executed 1,000 parallel requests with duplicate keys against staging cluster; 100% resulted in single database row creation and identical HTTP 200/201 responses.</li><li><strong>RCA Approved by:</strong> Director of Mobile Engineering &amp; VP of Enterprise Architecture.</li></ul>
+    <div class="footer-note">
+      Artifact generated for DevRev Solutions Engineering Evaluation • Confidential
+    </div>
+  </div>
+</body>
+</html>
