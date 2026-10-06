@@ -27,29 +27,41 @@ This guide walks you through setting up a **free Jira Cloud trial account**, cre
 
 ### Step 3: Import All 18 Issues via CSV (1-Click Method)
 
-Instead of manually typing 18 tickets, use Jira's built-in CSV import:
+We provide two pre-validated CSV files:
+1. **[`jira_issues_import.csv`](./jira_issues_import.csv)**: Standard format matching the challenge specifications (`Open`, `In Progress`, `Closed`).
+2. **[`jira_issues_import_scrum_kanban.csv`](./jira_issues_import_scrum_kanban.csv)**: Agile board format (`To Do`, `In Progress`, `Done`) which **auto-matches 100% of values with zero manual mapping** on default Scrum/Kanban boards.
 
+#### Import Steps:
 1. In your Jira dashboard, click the **Settings (gear icon ⚙️)** in the top right, then select **System**.  
    *(Alternative shortcut: Click **Filters** &rarr; **View all issues** &rarr; Click the `•••` top right &rarr; **Import issues from CSV**)*.
 2. Under the **IMPORT AND EXPORT** section on the left sidebar, click **External System Import**.
 3. Select **CSV**.
-4. Click **Choose File** and select:
-   ```text
-   c:\Users\sajna\Downloads\devrev\jira_issues_import.csv
-   ```
-5. Leave the default encoding (UTF-8) and click **Next**.
+4. Click **Choose File** and select either:
+   - `c:\Users\sajna\Downloads\devrev\jira_issues_import.csv` (Standard)
+   - `c:\Users\sajna\Downloads\devrev\jira_issues_import_scrum_kanban.csv` (Zero-Config Agile)
+5. Leave the default encoding (**UTF-8**) and click **Next**.
 6. **Project Mapping:**
-   - Select your project: `Offline Mobile Order Processing (OM)`.
+   - Select your project: `Offline Mobile Order Processing` (or whatever your project is named).
    - Click **Next**.
-7. **Field Mapping (Jira will auto-match most fields):**
+7. **Field Mapping (Auto-matched by Jira):**
+   - `Issue Key` &rarr;
+     - *If your project key is `OM`:* Map to **Issue Key**.
+     - *If your project key is different (e.g., `DEV`, `SCRUM`):* Leave **unmapped** (Jira will generate project keys, and each issue's title already starts with `OM-101:`, `OM-102:`, etc.).
    - `Summary` &rarr; **Summary**
    - `Issue Type` &rarr; **Issue Type**
    - `Status` &rarr; **Status**
    - `Priority` &rarr; **Priority**
-   - `Component` &rarr; **Component/s**
+   - `Component/s` &rarr; **Component/s**
    - `Labels` &rarr; **Labels**
    - `Description` &rarr; **Description**
-8. Click **Next**, review the sample, and click **Begin Import**.
+8. **Value Mapping (Click Next):**
+   - For `jira_issues_import.csv`:
+     - `Open` &rarr; Select **To Do** (or **Open**)
+     - `In Progress` &rarr; Select **In Progress**
+     - `Closed` &rarr; Select **Done** (or **Closed**)
+   - For `jira_issues_import_scrum_kanban.csv`:
+     - Jira automatically recognizes `To Do`, `In Progress`, and `Done` without needing manual selection.
+9. Click **Begin Import**. All 18 tickets will be imported in 5–10 seconds!
 
 ---
 
