@@ -1,0 +1,172 @@
+Issue Key,Summary,Issue Type,Status,Resolution,Priority,Component/s,Labels,Description
+OM-101,OM-101: [BUG] App crashes with NullPointerException when network reconnects mid-sync,Bug,In Progress,,Highest,Mobile-Core,offline crash network android,"*Problem:*
+When the device regains Wi-Fi or cellular connectivity while an outbox queue dispatch is initializing, the network state callback fires before the SQLite connection pool finishes initialization, causing an uncaught NullPointerException and app crash.
+
+*Steps to Reproduce:*
+1. Enable Airplane mode on mobile device.
+2. Create 3 offline orders to populate the outbox queue.
+3. Disable Airplane mode while tapping into the order list.
+4. Observe immediate crash.
+
+*Stack Trace:*
+java.lang.NullPointerException: Attempt to invoke virtual method void com.orderapp.sync.SyncQueue.dispatch() on a null object reference at com.orderapp.network.NetworkReceiver.onAvailable(NetworkReceiver.kt:42)
+
+*Expected Behavior:*
+Network state listener should safely await the database connection pool initialization with a mutex lock and gracefully initiate background sync."
+OM-102,OM-102: [BUG] Duplicate order creation on backend when client retries without waiting for ACK,Bug,In Progress,,Highest,Backend-API,sync idempotency data-integrity p0,"*Problem:*
+When cellular latency exceeds 15,000ms, the mobile client drops the HTTP socket and immediately re-sends the order in the next sync tick. Because the backend already processed the database insert but the TCP ACK was dropped in transit, the retried request inserts a second duplicate order with identical items.
+
+*Steps to Reproduce:*
+1. Throttle connection to 50 kbps with 80% packet drop.
+2. Submit an order from the mobile app.
+3. Observe client socket timeout after 15s.
+4. Client automatically retries.
+5. Check database: two identical orders created for the same customer with different IDs.
+
+*Expected Behavior:*
+All orders must include an X-Idempotency-Key header containing the client UUIDv4. Backend must enforce a Redis SETNX lock on this key with a 72-hour TTL and return the existing order payload on duplicate calls."
+OM-103,OM-103: [BUG] Main UI thread freezes (ANR) during background catalog delta sync,Bug,Open,,High,Mobile-Android,performance sqlite ui anr,"*Problem:*
+On lower-end Android devices (e.g. Samsung Galaxy A14), running incremental catalog synchronization (parsing 5,000+ updated SKU records) blocks the main UI thread for up to 4.2 seconds, triggering an Application Not Responding (ANR) dialog.
+
+*Steps to Reproduce:*
+1. Populate local SQLite database with 15,000 SKUs.
+2. Trigger a delta catalog sync payload containing 5,000 modified prices.
+3. Attempt to scroll through the product list or tap the search bar.
+4. UI hangs completely; OS displays ANR dialog.
+
+*Expected Behavior:*
+All JSON deserialization, SQL bulk inserts, and database indexing must execute strictly on a background coroutine dispatcher (Dispatchers.IO) with SQLite batching (chunk size = 250)."
+OM-104,OM-104: [BUG] Sync conflict silently overwrites server price adjustments when offline order commits,Bug,Open,,High,Sync-Engine,conflict-resolution pricing sync,"*Problem:*
+If an item base price was revised on the server from $45.00 to $50.00 while a sales rep was offline, syncing the offline order (calculated at $45.00) forces the backend to overwrite the catalog price table rather than recording an offline discount allowance.
+
+*Steps to Reproduce:*
+1. Sales rep caches catalog at 08:00 AM (Item A = $45.00).
+2. Admin updates Item A price to $50.00 at 10:00 AM on Web Portal.
+3. Rep creates offline order for Item A at 11:00 AM ($45.00).
+4. Device reconnects at 12:00 PM and syncs.
+5. Item A master price in database is erroneously reverted to $45.00.
+
+*Expected Behavior:*
+Master catalog prices must never be mutated by order payloads. Orders must honor the quoted price locked at creation timestamp and log the $5.00 variance as Offline Price Grace Allowance."
+OM-105,OM-105: [BUG] SQLite database locked error (sqlite3_busy) when user creates order during background pull,Bug,In Progress,,High,Data-Storage,sqlite concurrency mobile database,"*Problem:*
+When the background sync worker is writing newly fetched catalog diffs, any concurrent user action to save an order throws: android.database.sqlite.SQLiteDatabaseLockedException: database is locked (code 5).
+
+*Steps to Reproduce:*
+1. Trigger a large catalog sync in the background.
+2. While syncing, quickly add an item to the cart and press Place Order.
+3. App crashes or shows unhandled database error toast.
+
+*Expected Behavior:*
+SQLite must be configured in Write-Ahead Logging (WAL) mode to permit concurrent reads and writes, and connection pool timeouts must be increased to 5,000ms."
+OM-106,OM-106: [BUG] Expired JWT auth token causes unhandled 401 and silences outbox queue indefinitely,Bug,Open,,Medium,Mobile-Core,auth security outbox token,"*Problem:*
+If a sales rep stays in the field without connectivity for longer than the 4-hour JWT access token lifespan, the sync worker receives an HTTP 401 Unauthorized response on reconnect, crashes the queue loop, and marks all pending orders as FAILED_SYNC without attempting a refresh token handshake.
+
+*Steps to Reproduce:*
+1. Log in and force JWT expiration by adjusting system clock ahead by 5 hours.
+2. Disconnect network and create an offline order.
+3. Reconnect to Wi-Fi.
+4. Sync fails with 401; orders remain permanently stuck in outbox.
+
+*Expected Behavior:*
+The HTTP interceptor must intercept 401 responses, transparently invoke the OAuth /refresh endpoint using the secure refresh token, update storage, and replay the pending sync requests."
+OM-107,OM-107: [BUG] Cart calculations display floating-point rounding discrepancies on offline tax calculation,Bug,Closed,Done,Medium,Mobile-Core,cart tax calculations precision,"*Problem:*
+Line item tax calculations performed on the client used standard double IEEE 754 floating-point arithmetic, causing sub-cent rounding errors (e.g. $19.99999999999997 instead of $20.00), which led the backend validation schema to reject the order as invalid.
+
+*Root Cause & Resolution:*
+Replaced JavaScript Number / Kotlin Double with BigDecimal / integer micro-cents arithmetic across all local calculation engines.
+
+*Status:*
+Verified and closed in PR #284."
+OM-108,OM-108: [BUG] Inventory count drops to negative when multiple offline devices sync orders for identical SKU,Bug,Open,,High,Backend-API,inventory race-condition backend concurrency,"*Problem:*
+When 3 field reps visit different stores and each sell 4 units of a low-stock SKU (total 12 units) while central warehouse stock only had 6 units, all 3 syncs execute sequential deductions, leaving warehouse inventory at -6.
+
+*Steps to Reproduce:*
+1. Set SKU-104 inventory to 6 units.
+2. Disconnect 3 mobile devices.
+3. Place an order for 4 units on each device.
+4. Reconnect all 3 devices simultaneously.
+5. Database inventory table shows -6 units available.
+
+*Expected Behavior:*
+Backend must execute inventory deductions in a SERIALIZABLE transaction. When available stock drops to 0, remaining units must automatically be converted into a Backorder line item and flagged for warehouse replenishment."
+OM-109,OM-109: [STORY] Implement exponential backoff and jitter retry logic in Mobile API sync client,Story,In Progress,,High,Sync-Engine,network resilience sync retry backoff,"*User Story:*
+As a mobile system engineer, I want the sync client to employ exponential backoff with full jitter when retrying failed network requests, so that hundreds of reconnecting devices do not trigger a Thundering Herd DDoS attack on our API gateway.
+
+*Acceptance Criteria:*
+1. Base retry interval set to 2.0 seconds with multiplier of 2.0 (2s, 4s, 8s, 16s, max 60s).
+2. Decorrelated jitter applied: sleep = rand(0, min(max_interval, base * 2^attempt)).
+3. Stop retrying on non-transient 4xx errors (400, 403, 422).
+4. Automated unit tests verify backoff distribution across 100 simulated failures."
+OM-110,OM-110: [STORY] Add persistent visual connection status banner across mobile app,Story,In Progress,,Medium,Mobile-Core,ui ux feedback status indicator,"*User Story:*
+As a field sales representative, I want a clear, persistent connectivity indicator at the top of the mobile screen, so that I always know whether my orders are being processed locally or synced live with the server.
+
+*Acceptance Criteria:*
+1. Green pill: Online when network RTT < 500ms.
+2. Amber pill: Offline Mode Active with tooltip confirming local secure saving.
+3. Blue animated spinner: Syncing (X of Y orders remaining).
+4. Banner must be non-modal and never block cart or checkout interaction."
+OM-111,OM-111: [STORY] Implement client-side UUIDv4 idempotency key generation and caching in Redis,Story,Closed,Done,Highest,Backend-API,idempotency redis backend deduplication,"*User Story:*
+As a backend architect, I want every order submission to require an X-Idempotency-Key header stored in Redis, so that dropped connections or repeated sync attempts never result in duplicate orders or double billing.
+
+*Acceptance Criteria:*
+1. Client generates UUIDv4 at the exact moment user taps Confirm Order.
+2. Backend intercepts POST /api/v1/orders/sync and checks Redis key idemp:{key}.
+3. If key exists, return HTTP 200 with previously generated order payload.
+4. If key does not exist, acquire lock, process order, save response, and set 72h TTL.
+
+*Status:*
+Completed and merged in PR #251."
+OM-112,OM-112: [STORY] Build Sync Center dashboard to view queued and conflicted orders,Story,Open,,Medium,Mobile-Core,ui dashboard sync management outbox,"*User Story:*
+As a field sales rep or mobile supervisor, I want a dedicated Sync Center screen in the app, so that I can see the exact status of all orders placed today, manually trigger a sync, and resolve any flagged issues.
+
+*Acceptance Criteria:*
+1. List view separated into tabs: Queued (Offline), Synced, Needs Attention (Conflicts).
+2. Sync Now button with loading state.
+3. Detail view for conflicted orders displaying root cause (e.g. partial stockout) and recommended remedy.
+4. Ability to export un-synced orders as encrypted backup file."
+OM-113,OM-113: [STORY] Integrate Android WorkManager and iOS BGAppRefresh for background sync,Story,In Progress,,High,Mobile-Core,background battery android ios workmanager,"*User Story:*
+As a mobile user, I want my queued offline orders to sync in the background even if I close the app, so that I do not have to keep the screen on while driving to the next client appointment.
+
+*Acceptance Criteria:*
+1. Android: Register PeriodicWorkRequest with Constraints(NetworkType.CONNECTED).
+2. iOS: Implement BGAppRefreshTask and register BGTaskScheduler.
+3. Execution must honor battery saving mode and not execute when battery < 15%.
+4. Background sync completes within 30 seconds of execution window."
+OM-114,OM-114: [STORY] Implement SQLCipher AES-256 local database encryption with Keystore and Keychain,Story,Closed,Done,Highest,Data-Storage,security compliance encryption sqlcipher,"*User Story:*
+As a compliance and security officer, I want all customer data, price books, and offline orders encrypted on-device with AES-256, so that customer sensitive data is never compromised if a sales tablet is lost or stolen.
+
+*Acceptance Criteria:*
+1. Database compiled with SQLCipher 4.5+.
+2. 256-bit passphrase generated via SecureRandom and stored in iOS Keychain / Android Keystore.
+3. Database file cannot be inspected via SQLite desktop viewers without key.
+4. Performance benchmark shows < 5% query slowdown compared to plain SQLite.
+
+*Status:*
+Verified, security penetration tested, and closed in PR #230."
+OM-115,OM-115: [STORY] Create server-side automated backorder split logic for partial inventory depletion,Story,Open,,Medium,Backend-API,inventory order-processing backend backorder,"*User Story:*
+As an inventory operations manager, I want the server to automatically split an offline order when available stock is insufficient, so that the customer immediately receives what is available while remaining items are queued for backorder fulfillment.
+
+*Acceptance Criteria:*
+1. When requested_qty > available_qty, create OrderLineItem-A (Status: ALLOCATED, Qty: available_qty).
+2. Create OrderLineItem-B (Status: BACKORDERED, Qty: requested_qty - available_qty).
+3. Send split notification email/SMS to customer and rep.
+4. Total order remains single master ID with 2 sub-fulfillment groups."
+OM-116,OM-116: [TASK] Set up Charles Proxy and Network Link Conditioner chaos test harness in CI,Task,Closed,Done,Medium,DevOps,qa testing chaos ci automation,"*Task Description:*
+Configure automated end-to-end integration tests in GitHub Actions using headless mobile emulators connected through Charles Proxy and Network Link Conditioner.
+
+*Acceptance Criteria:*
+1. CI pipeline runs automated suite under 5 simulated network profiles: High Packet Drop (40%), High Latency (3000ms RTT), Connection Flapping (toggle every 5s), Complete Disconnection, Normal LTE.
+2. All 5 test runs pass without crashes or duplicate records.
+
+*Status:*
+Pipeline live in .github/workflows/network-chaos-tests.yml."
+OM-117,OM-117: [TECH-DEBT] Migrate catalog cache schema to SQLite Write-Ahead Logging (WAL) mode,Task,Closed,Done,High,Data-Storage,sqlite performance database wal tech-debt,"*Task Description:*
+The current default rollback journal mode in SQLite causes reader/writer starvation when the background sync worker performs batch insertions while the UI thread queries the product catalog.
+
+*Resolution:*
+Executed PRAGMA journal_mode = WAL; and configured SQLite connection pool with separate read and write channels.
+
+*Status:*
+Deployed in commit e8b2f90."
+OM-118,OM-118: [TASK] Add client telemetry metrics for offline queue depth sync latency and battery drain,Task,Open,,Low,Mobile-Core,telemetry analytics observability metrics,"*Task Description:*
+Instrument client mobile app with OpenTelemetry / Datadog mobile SDK to capture: 1. offline_queue_depth: Gauge of pending orders awaiting sync; 2. sync_duration_ms: Time taken from network reconnect to 201 ACK; 3. sync_failure_count: Counter with error code breakdown (401, 500, Timeout); 4. battery_consumption_mah: Estimated battery drain during background sync cycles."

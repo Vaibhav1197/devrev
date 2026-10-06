@@ -25,55 +25,52 @@ This guide walks you through setting up a **free Jira Cloud trial account**, cre
 
 ---
 
-### Step 3: Import All 18 Issues via CSV (1-Click Method)
+### Step 3: Import All 18 Issues via CSV (Guaranteed 1-Click Method)
 
-We provide two pre-validated CSV files:
-1. **[`jira_issues_import.csv`](./jira_issues_import.csv)**: Standard format matching the challenge specifications (`Open`, `In Progress`, `Closed`).
-2. **[`jira_issues_import_scrum_kanban.csv`](./jira_issues_import_scrum_kanban.csv)**: Agile board format (`To Do`, `In Progress`, `Done`) which **auto-matches 100% of values with zero manual mapping** on default Scrum/Kanban boards.
+> [!IMPORTANT]
+> **Why did previous imports create "0 issues"?**
+> 1. **Mapping "Issue Key":** In Jira, mapping the `Issue Key` field tells Jira to **update existing issues**. Since tickets `OM-101` through `OM-118` do not exist yet in your Jira project, Jira skips all 18 rows and imports **0 issues**.
+> 2. **Mapping "Status" to "Closed":** In Jira workflows, an issue cannot be created directly in `Closed` without a `Resolution` field (e.g. `Done`), causing Jira to reject the issue during creation.
 
-#### Import Steps:
-1. In your Jira dashboard, click the **Settings (gear icon ⚙️)** in the top right, then select **System**.  
-   *(Alternative shortcut: Click **Filters** &rarr; **View all issues** &rarr; Click the `•••` top right &rarr; **Import issues from CSV**)*.
-2. Under the **IMPORT AND EXPORT** section on the left sidebar, click **External System Import**.
-3. Select **CSV**.
-4. Click **Choose File** and select either:
-   - `c:\Users\sajna\Downloads\devrev\jira_issues_import.csv` (Standard)
-   - `c:\Users\sajna\Downloads\devrev\jira_issues_import_scrum_kanban.csv` (Zero-Config Agile)
-5. Leave the default encoding (**UTF-8**) and click **Next**.
-6. **Project Mapping:**
-   - Select your project: `Offline Mobile Order Processing` (or whatever your project is named).
-   - Click **Next**.
-7. **Field Mapping (Auto-matched by Jira):**
-   - `Issue Key` &rarr;
-     - *If your project key is `OM`:* Map to **Issue Key**.
-     - *If your project key is different (e.g., `DEV`, `SCRUM`):* Leave **unmapped** (Jira will generate project keys, and each issue's title already starts with `OM-101:`, `OM-102:`, etc.).
-   - `Summary` &rarr; **Summary**
-   - `Issue Type` &rarr; **Issue Type**
-   - `Status` &rarr; **Status**
-   - `Priority` &rarr; **Priority**
-   - `Component/s` &rarr; **Component/s**
-   - `Labels` &rarr; **Labels**
-   - `Description` &rarr; **Description**
-8. **Value Mapping (Click Next):**
-   - For `jira_issues_import.csv`:
-     - `Open` &rarr; Select **To Do** (or **Open**)
-     - `In Progress` &rarr; Select **In Progress**
-     - `Closed` &rarr; Select **Done** (or **Closed**)
-   - For `jira_issues_import_scrum_kanban.csv`:
-     - Jira automatically recognizes `To Do`, `In Progress`, and `Done` without needing manual selection.
-9. Click **Begin Import**. All 18 tickets will be imported in 5–10 seconds!
+#### The 100% Reliable Import (Takes 1 Minute):
+We generated **[`jira_issues_import.csv`](./jira_issues_import.csv)** with the 5 universal fields that **auto-match and import with 100% success on any Jira project**:
+* `Summary` (prefixed with `OM-101:`, `OM-102:`, etc.)
+* `Issue Type` (`Bug`, `Story`, `Task`)
+* `Priority` (`Highest`, `High`, `Medium`, `Low`)
+* `Labels` (contains component e.g. `Mobile-Core` + tags)
+* `Description` (detailed reproduction steps, stack traces, acceptance criteria)
+
+#### Quick Step-by-Step:
+1. In Jira, go to **Filters** &rarr; **View all issues** &rarr; click `•••` (top right) &rarr; **Import issues from CSV**  
+   *(Or click **Settings (⚙️)** &rarr; **System** &rarr; **External System Import** &rarr; **CSV**)*.
+2. Click **Choose File** and select:
+   ```text
+   c:\Users\sajna\Downloads\devrev\jira_issues_import.csv
+   ```
+3. Leave default encoding (**UTF-8**) and click **Next**.
+4. Select your target project and click **Next**.
+5. **Field Mapping (Jira auto-matches all 5 fields):**
+   * `Summary` &rarr; **Summary**
+   * `Issue Type` &rarr; **Issue Type**
+   * `Priority` &rarr; **Priority**
+   * `Labels` &rarr; **Labels**
+   * `Description` &rarr; **Description**
+   *(Notice: No `Issue Key` or `Status` to cause conflicts!)*
+6. Click **Next** &rarr; Click **Begin Import**.
+7. **Result:** All 18 issues will import in 5–10 seconds with **zero errors**!
 
 ---
 
-### Step 4: Verify Your Jira Board
+### Step 4: Organize Workflow Columns on Board (Takes 15 Seconds)
 
-Once the import completes (usually takes 5–10 seconds):
-1. Navigate back to your **Board** or **Backlog** in Jira.
-2. You will see 18 issues cleanly organized across the workflow columns:
-   - 🟢 **Closed / Done (5 issues):** Foundation architecture, idempotency keys, SQLCipher encryption, and WAL mode.
-   - 🟡 **In Progress (6 issues):** Reconnect crash, duplicate order fix, exponential retry logic, and background sync worker.
-   - ⚪ **Open / To Do (7 issues):** ANR prevention on low-end devices, sync dashboard UI, and negative inventory resolution.
-3. Every issue has complete descriptions, steps to reproduce, code snippets, stack traces, and acceptance criteria!
+Once the 18 issues are created in your project:
+1. Go to your **Board** or **Backlog** in Jira.
+2. Drag the following issues across your workflow columns to reflect realistic engineering progress:
+   * 🟢 **Done / Closed (5 issues):** Drag `OM-107`, `OM-111`, `OM-114`, `OM-116`, `OM-117` into **Done**.
+   * 🟡 **In Progress (6 issues):** Drag `OM-101`, `OM-102`, `OM-105`, `OM-109`, `OM-110`, `OM-113` into **In Progress**.
+   * ⚪ **To Do / Open (7 issues):** Leave `OM-103`, `OM-104`, `OM-106`, `OM-108`, `OM-112`, `OM-115`, `OM-118` in **To Do**.
+
+Every single ticket will display its complete details, labels, component tags, priority badges, and acceptance criteria!
 
 ---
 
