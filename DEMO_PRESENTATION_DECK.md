@@ -1,234 +1,230 @@
 # DevRev Solutions Engineer Demo Presentation
 ## Topic: DevRev Computer in Action — Offline Mode for Mobile Order Processing
 **Role:** Solutions Engineer (Candidate)  
-**Audience:** Customer Executive & Engineering Leadership (Role-Play Evaluation)  
+**Evaluation:** Solutions Engineer Interview — Demo & Role-Play Evaluation  
 **Live Interactive Deck:** `http://127.0.0.1:5000/presentation` or [`DEMO_PRESENTATION_DECK.html`](./DEMO_PRESENTATION_DECK.html)  
 
 ---
 
-### Executive Slide Outline (7 Slides)
+### Executive Slide Outline (7 Slides for Hiring Manager)
 
-* **Slide 1: Problem Framing & Persona Hook** — The Apex Wholesale Crisis & The Cost of Disconnected Systems
-* **Slide 2: Data Setup** — High-Fidelity Multi-Source Data Preparation (PRD, 18 Jira Issues, API Specs, RCA, Escalation)
-* **Slide 3: Connectors Used** — Breaking Enterprise Silos (Google Drive, Jira, Notion into DevRev Computer)
-* **Slide 4: Key Computer Queries** — Conversational Interaction & Cross-Silo Reasoning
-* **Slide 5: Insights Generated** — Real Intelligence Surfaced by Computer (11 PRD Gaps, Defect Correlation, ARR Risk)
-* **Slide 6: Business Value** — Quantifiable ROI for Product Managers, Engineering Teams, and Leadership
-* **Slide 7: Role-Play Delivery Script & Defense** — 5-Minute Turnkey Interview Walkthrough & Q&A Strategy
+* **Slide 1: Problem Framing & Use Case Hook** — The Offline Mobile Ordering Dilemma & Fragmented Systems
+* **Slide 2: Data Setup** — Multi-Source Data Preparation (Google Drive PRD, Jira Issues, Supporting Specs)
+* **Slide 3: Connectors Used** — Ingestion into DevRev Computer (Google Drive, Jira Cloud, Notion)
+* **Slide 4: Key Computer Queries** — Conversational Prompts Used in DevRev Computer
+* **Slide 5: Insights Generated** — High-Value Findings Surfaced by Computer (WAL Dependency, Telemetry Gap, PRD Risks)
+* **Slide 6: Business Value** — Measurable Impact for Product Managers, Engineering Teams, and Leadership
+* **Slide 7: Demo Storytelling & Role-Play Walkthrough** — Turnkey 5-Minute Script & Q&A Strategy
 
 ---
 
-## Slide 1: Problem Framing & Persona Hook
+## Slide 1: Problem Framing & Use Case Hook
 
-### Slide Title: The Crisis in the Cold: Why Offline Mobile Ordering Breaks Traditional CRMs
+### Slide Title: The Offline Mobile Dilemma: Why Disconnected Systems Fail Field Operations
 #### Subtitle: Bridging Customer Escalations, Product Specs, and Engineering Backlogs with DevRev Computer
 
-### 1. The Real-World Customer Persona & Incident
-* **Customer:** **Apex Wholesale Supply Co.** (Tier-1 Strategic Enterprise Account, **$420,000 ARR**, 65 mobile sales seats).
-* **The Environment:** Field representatives visit commercial restaurant kitchens, grocery chains, and regional food distributors across Texas, Oklahoma, and Louisiana. Many order-capture points are in **reinforced basement walk-in freezers with zero cellular reception**.
-* **The Incident ("Fall Foodservice Expo"):**
-  * 14 field sales reps were completely blocked from capturing orders for >5 hours.
-  * The mobile app froze on checkout with spinning wheels followed by `HTTP 504 Gateway Timeout` errors.
-  * **$84,500 in high-margin pre-orders were delayed**.
-  * Two major restaurant groups threatened cancellation. Reps wrote orders on paper napkins, leading to **8.4% transcription errors** and expensive overtime.
-  * When network reconnected, **38 duplicate orders** were booked ($46,200 in double-allocated inventory).
+### 1. The Real-World Customer Use Case
+* **Persona:** Field sales representatives and mobile delivery drivers (e.g. wholesale distribution, beverage delivery, field service).
+* **The Environment:** Reps visit retail basements, rural distribution centers, and commercial walk-in freezers with **zero cellular or Wi-Fi reception**.
+* **The Operational Crisis:**
+  * When mobile apps lack true offline architecture, checkout freezes with `HTTP 504 Gateway Timeout` errors.
+  * Orders are dropped or delayed, forcing reps to write on paper notebooks, resulting in transcription errors and lost sales.
+  * When devices reconnect, unhandled network state transitions trigger **app crashes** or **duplicate order submissions**.
 
-### 2. The Core Enterprise Problem: Disconnected Silos
-Traditional SaaS tools create departmental black boxes:
-* **Customer Support & Account Management:** Trapped in email threads, Zendesk tickets, and verbal escalations.
-* **Product Management:** PRD stored in Google Drive or Notion, disconnected from real-time customer escalations.
-* **Engineering Teams:** Sprints and bugs managed in Jira (`OM-101` through `OM-118`), blind to the ARR impact of the bugs they are fixing.
+### 2. The Core Enterprise Friction: Disconnected Silos
+In traditional enterprise stacks, knowledge lives in separate departmental silos:
+* **Product Management:** PRD stored in **Google Drive** or **Notion**, defining theoretical requirements.
+* **Engineering Teams:** Technical tasks, bugs, and concurrency fixes tracked in **Jira**, disconnected from product documentation.
+* **Customer Support & Success:** Customer escalations and field bug reports isolated in support tools and email.
 
-> **Key Takeaway for Evaluators:**  
-> When systems don't talk to each other, customer pain takes weeks to reach engineering, duplicate bugs occur, and hundreds of thousands of dollars in ARR are put at risk. **DevRev Computer solves this by creating a single, unified knowledge graph.**
+> **The Takeaway for Evaluators:**  
+> When these tools don't talk to each other, engineers build against incomplete specs, critical concurrency fixes go untested, and product managers are blind to technical debt. **DevRev Computer creates a unified semantic knowledge layer that connects product, engineering, and customer reality.**
 
 ---
 
 ## Slide 2: Data Setup: Structured Multi-Source Preparation
 
-### Slide Title: Data Setup: High-Fidelity Enterprise Artifacts
-#### Subtitle: 5 Interconnected Artifacts Simulating Real Product, Engineering, and Customer Operations
+### Slide Title: Data Setup: Multi-Source Data Preparation
+#### Subtitle: Structured Enterprise Artifacts Prepared Across Google Drive, Jira Cloud, and Technical Specs
 
-To evaluate DevRev Computer's true intelligence, we constructed a realistic, multi-disciplinary dataset across 5 critical artifacts:
+To test DevRev Computer's true analytical intelligence, we prepared a multi-disciplinary data environment:
 
-| Artifact Type | File / System | Key Scope & Structural Highlights |
+| Data Source | System / Location | Key Scope & Structural Details |
 | :--- | :--- | :--- |
-| **1. Master Product Requirement Document (PRD)** | [`PRD_Offline_Mode_Mobile_Order_Processing.md`](./PRD_Offline_Mode_Mobile_Order_Processing.md)<br>*(Google Drive / Notion)* | • 23KB comprehensive specification.<br>• SQLite local database with SQLCipher AES-256 encryption.<br>• Client-side UUIDv4 idempotency keys, outbox sync queue, and deterministic conflict matrix (inventory, pricing, credit limits). |
-| **2. Engineering Issue Backlog (18 Jira Tickets)** | [`jira_issues_import.csv`](./jira_issues_import.csv)<br>*(Jira Project: `OM`)* | • **8 Bugs:** Reconnect crash (`OM-101`), Duplicate orders (`OM-102`), ANR thread freeze (`OM-103`), Negative inventory race condition (`OM-108`).<br>• **7 Stories:** WorkManager background sync (`OM-113`), Sync Center dashboard (`OM-112`), Idempotency keys (`OM-111`).<br>• **3 Tasks:** CI chaos proxy harness (`OM-116`), SQLite WAL mode (`OM-117`), Telemetry (`OM-118`).<br>• Statuses: Open (7), In Progress (6), Closed (5). |
-| **3. Technical Architecture & API Design Notes** | [`API_Design_Notes_Offline_Sync.md`](./API_Design_Notes_Offline_Sync.md)<br>*(Google Drive)* | • Complete REST contracts for `POST /api/v1/orders/sync` and `GET /api/v1/catalog/delta`.<br>• Redis `SETNX` distributed lock pattern with 72h TTL.<br>• Monotonic revision numbers for incremental delta syncing. |
-| **4. P0 Root Cause Analysis (Bug Investigation)** | [`Bug_Investigation_Summary_OM102.md`](./Bug_Investigation_Summary_OM102.md)<br>*(Google Drive)* | • Formal post-mortem for `INC-49201` (`OM-102`).<br>• Full timeline down to the second, 5 Whys diagram, and code diff fixing dropped TCP ACKs over cellular towers. |
-| **5. Customer Escalation Report** | [`Customer_Escalation_Report_ApexWholesale.md`](./Customer_Escalation_Report_ApexWholesale.md)<br>*(Google Drive)* | • Executive briefing from VP of Sales Operations Marcus Sterling.<br>• ARR at risk: **$420,000**; delayed pipeline: **$84,500**; 65 impacted sales seats. |
+| **1. Master Product Requirement Document (PRD)** | Google Drive (Google Docs) / [`PRD_Offline_Mode_Mobile_Order_Processing.md`](./PRD_Offline_Mode_Mobile_Order_Processing.md) | • Comprehensive PRD defining local encrypted storage (SQLCipher AES-256), client-side UUIDv4 idempotency keys, outbox sync worker, and conflict resolution matrix (inventory depletion, price variances, credit limits). |
+| **2. Jira Engineering Issues** | Jira Cloud (Project: `Devrev` / `OM`) / [`jira_issues_import.csv`](./jira_issues_import.csv) | • **`OM-116` (KAN-19):** CI chaos test harness using Charles Proxy & Network Link Conditioner across 5 flaky profiles (*Done*).<br>• **`OM-117` (KAN-20):** Migrate catalog cache to SQLite WAL mode to fix reader/writer starvation (*Done*).<br>• **`OM-118` (KAN-21):** Client telemetry metrics for queue depth, sync latency, and battery drain (*In Progress*).<br>• Plus related defect catalog for reconnection crashes and idempotency locks. |
+| **3. Technical Architecture & API Design Notes** | Google Drive / [`API_Design_Notes_Offline_Sync.md`](./API_Design_Notes_Offline_Sync.md) | • Standalone REST contracts for `POST /api/v1/orders/sync` and `GET /api/v1/catalog/delta`.<br>• Redis distributed lock patterns, monotonic revision delta sync, and retry parameters. |
+| **4. P0 Root Cause Analysis (Bug Investigation)** | Google Drive / [`Bug_Investigation_Summary_OM102.md`](./Bug_Investigation_Summary_OM102.md) | • Deep post-mortem on duplicate order creation caused by dropped cellular TCP ACKs (`INC-49201`). |
+| **5. Customer Escalation Report** | Google Drive / [`Customer_Escalation_Report_ApexWholesale.md`](./Customer_Escalation_Report_ApexWholesale.md) | • Executive report from Apex Wholesale ($420k ARR, 65 seats) detailing $84.5k in delayed orders. |
 
 ---
 
-## Slide 3: Connectors Used: Ingestion into DevRev Computer
+## Slide 3: Connectors Used: Unified Ingestion into DevRev Computer
 
-### Slide Title: Connectors Used: Unified Ingestion into DevRev Computer
-#### Subtitle: Ingesting Unstructured Docs, Sprints, and Customer Feedback into a Semantic Graph
+### Slide Title: Connectors Used: Ingesting Google Drive, Jira, and Notion
+#### Subtitle: Building a Living Knowledge Graph Across Product, Engineering, and Support
 
-DevRev Computer connects natively to the systems where modern product development and customer operations actually happen:
+DevRev Computer natively integrates with the primary systems of record where product and engineering work happens:
 
 ```
-┌─────────────────────────────────┐        ┌─────────────────────────────────┐
-│       Google Drive Connector     │        │          Jira Connector         │
-│  - Master PRD Specification     │        │  - 18 Engineering Issues        │
-│  - API Design Notes (ARCH-OM)   │        │  - Sprint Cycles & Statuses     │
-│  - Bug RCA (INC-49201)          │        │  - Components & Acceptance Criteria
-│  - Customer Escalation Brief    │        │  - Bug Life Cycle & Velocity    │
-└────────────────┬────────────────┘        └────────────────┬────────────────┘
-                 │                                          │
-                 ▼                                          ▼
-       ┌──────────────────────────────────────────────────────────────┐
-       │                DevRev Knowledge Graph (Computer)             │
-       │  • Vector Embedding Indexing (Semantic Content Search)       │
-       │  • Entity-Relationship Linking (Customer ↔ Bug ↔ PRD ↔ Work)│
-       │  • Cross-System Temporal Correlation                         │
-       └──────────────────────────────┬───────────────────────────────┘
-                                      ▲
-                                      │
-                       ┌──────────────┴────────────────┐
-                       │   Notion / Support Connector  │
-                       │  - Customer ARR ($420k Apex)  │
-                       │  - Meeting Notes & Runbooks   │
-                       └───────────────────────────────┘
+┌──────────────────────────────────────────┐        ┌──────────────────────────────────────────┐
+│          Google Drive Connector          │        │            Jira Cloud Connector          │
+│  • Master PRD Google Doc                 │        │  • Connected Project: "Devrev"           │
+│  • API Architecture Specifications       │        │  • Issue OM-116: Chaos Harness (KAN-19)  │
+│  • Bug Root Cause Analyses (RCA)         │        │  • Issue OM-117: WAL Mode Fix (KAN-20)   │
+│  • Customer Escalation Briefs            │        │  • Issue OM-118: Telemetry (KAN-21)      │
+└────────────────────┬─────────────────────┘        └────────────────────┬─────────────────────┘
+                     │                                                   │
+                     ▼                                                   ▼
+       ┌───────────────────────────────────────────────────────────────────────────┐
+       │                     DevRev Computer Semantic Knowledge Graph              │
+       │  • Vector Embedding Search (Deep semantic understanding of text & tables) │
+       │  • Cross-System Entity Linking (Customer ARR ↔ Jira Key ↔ PRD Section)    │
+       │  • Autonomous Reasoning Engine (Cross-references specs against tasks)     │
+       └─────────────────────────────────────┬─────────────────────────────────────┘
+                                             ▲
+                                             │
+                              ┌──────────────┴──────────────┐
+                              │  Notion / Knowledge Base    │
+                              │  • Meeting Notes & Runbooks │
+                              │  • Team Roadmaps & SLAs     │
+                              └─────────────────────────────┘
 ```
 
-### Connector Breakdown:
-1. **Google Drive Connector:**
-   * Ingests living technical documents, post-mortems, and customer escalations.
-   * Parses Markdown, PDF, and Google Docs while preserving tables, headings, and code snippets.
-2. **Jira Cloud Connector:**
-   * Ingests issues, epics, sprint statuses, components (`Mobile-Core`, `Backend-API`), and priorities (`Highest` to `Low`).
-   * Establishes links between bug tickets and product feature epics.
-3. **Notion & Customer Feedback Connector:**
-   * Connects customer accounts, ARR values, contract renewal dates, and meeting notes directly to the knowledge graph.
+### Key Connector Highlights:
+1. **Google Drive Connector:** Ingests live Google Docs and Markdown files, preserving headings, tables, and code snippets with real-time change detection.
+2. **Jira Cloud Connector:** Connects directly to Atlassian Jira, reading issue summaries, statuses (`Done`, `In Progress`), descriptions, and commit hashes (e.g. commit `e8b2f90`).
+3. **Notion / Wiki Connector:** Pulls contextual team notes and runbooks into the unified embedding space.
 
 ---
 
 ## Slide 4: Key Computer Queries: Conversational Interaction
 
-### Slide Title: Key Computer Queries: Conversational Interaction
-#### Subtitle: Natural Language Queries That Reason Across Product, Engineering, and Business Data
+### Slide Title: Key Computer Queries: Conversational Interaction in Action
+#### Subtitle: The Exact Prompts Used in DevRev Computer to Uncover Risks, Bugs, and Documentation Gaps
 
-Instead of manually reading 50 pages of documentation or writing complex JQL / SQL queries, stakeholders query DevRev Computer conversationally:
+Instead of manually reading through 25-page specifications or running complex JQL filters, we interacted with DevRev Computer conversationally using the exact prompts below:
 
-### Query 1: PRD Risk & Gap Analysis (Product & Architecture)
-> **Prompt to Computer:**  
-> *"Review the PRD on offline order processing. Identify risks or missing technical considerations."*
-* **Intent:** Evaluate whether the PRD has blind spots, edge cases, or architectural inconsistencies before engineers start coding.
-* **Data Sources Consulted by Computer:** `PRD_Offline_Mode_Mobile_Order_Processing.md`, `API_Design_Notes_Offline_Sync.md`.
+### Query 1: Active Engineering Limitations & Concurrency Audit
+> **User Prompt (UP):**  
+> *"Based on the PRD, what existing bugs or technical limitations might impact this feature?"*
+* **Intent:** Interrogates the Jira connector to uncover active engineering limitations, technical debt, and concurrency dependencies that threaten the PRD's promises.
+* **Computer Finding:** Discovered that the PRD's concurrency promise relies entirely on `OM-117` (SQLite WAL mode fix in commit `e8b2f90`), flagged that `OM-118` (telemetry metrics) is still In Progress, and revealed that the CI chaos harness (`OM-116`) misses long-offline multi-day scenarios.
 
-### Query 2: Historical Defect Correlation (Engineering Triage)
-> **Prompt to Computer:**  
+### Query 2: Documentation & Specification Gap Audit
+> **User Prompt (UP):**  
+> *"Are there documents related to retry logic, API reliability, or sync conflicts?"*
+* **Intent:** Audits the organization's knowledge library to determine whether critical implementation details exist as build-ready design specs or only as summary tables in the PRD.
+* **Computer Finding:** Confirmed that the PRD is the *only* document covering these topics in the organization, and only at requirement depth. Proved that zero standalone design docs, SLA runbooks, or conflict engine specs exist.
+
+### Query 3: Multi-System Architectural Risk Synthesis
+> **User Prompt (UP):**  
+> *"Summarize the main engineering risks for implementing offline order processing."*
+* **Intent:** Synthesizes multi-system risks across Data Integrity, Reliability, Local Storage, and Security into a prioritized pre-GA action register.
+* **Computer Finding:** Flagged 72h Redis dedup TTL vs unbounded outbox queue age, lack of dead-letter queue (DLQ) for poison orders, 4-hour offline JWT auth expiry, and storage budget calculation discrepancy (50k vs 15k SKUs).
+
+### Query 4: Historical Jira Defect Search & Greenfield Verification
+> **User Prompt (UP):**  
 > *"Are there any past Jira issues related to offline sync or network reconnection problems?"*
-* **Intent:** Search the Jira backlog to see if engineering has already encountered this problem or if past fixes exist.
-* **Data Sources Consulted by Computer:** Jira Project `OM` (18 issues), `Bug_Investigation_Summary_OM102.md`.
-
-### Query 3: Customer Revenue Exposure (Leadership Prioritization)
-> **Prompt to Computer:**  
-> *"What is the business impact and revenue at risk from customer escalations tied to offline order failures?"*
-* **Intent:** Understand which customers are screaming the loudest, their contract value, and whether a bug warrants a P0 priority.
-* **Data Sources Consulted by Computer:** `Customer_Escalation_Report_ApexWholesale.md`, Jira `OM-102`, PRD Section 1.
+* **Intent:** Searches historical defect records in Jira Cloud (Project `Devrev` / `OM`).
+* **Computer Finding:** Surfaced `OM-118` (P2, In Progress), `OM-117` (P0, Done), `OM-116` (P1, Done) in Jira, and confirmed that zero actual field failure bugs are logged—proving this is a greenfield feature with unvalidated conflict rules.
 
 ---
 
 ## Slide 5: Insights Generated: What Computer Surfaced
 
 ### Slide Title: Insights Generated: High-Value Intelligence Surfaced by Computer
-#### Subtitle: From Raw Text to Actionable Engineering Gaps and Revenue Correlation
+#### Subtitle: Real Findings Surfaced from Your Connected PRD and Jira Issues
 
-DevRev Computer did not just summarize text — it performed **deep cross-silo systems thinking**, uncovering 11 critical gaps and connecting engineering defects to financial ARR:
+DevRev Computer went beyond simple summarization — it performed **deep cross-silo systems thinking**, surfacing four major categories of actionable intelligence:
 
-### 1. Critical Architectural Gaps Surfaced from the PRD
-* ⚠️ **Idempotency TTL vs. Offline Duration Mismatch (Gap 1):**  
-  *Computer Insight:* The PRD defines a 72-hour Redis dedup TTL (FR-05), but has no cap on outbox queue age. A sales rep offline over a 4-day holiday weekend would sync after the dedup key expired, causing duplicate order creation!
-* ⚠️ **Pricing Grace Window vs. Route Reality (Gap 2):**  
-  *Computer Insight:* Prices are honored only if submitted within 24 hours, yet multi-day rural sales routes easily exceed this. What happens at hour 30? Undefined.
-* ⚠️ **Offline Authentication & Token Expiry (Gap 3):**  
-  *Computer Insight:* Access tokens expire in 4 hours. The PRD failed to define how the app stays operable and authenticates on reconnect if tokens lapse while in a basement.
-* ⚠️ **Storage Budget Inconsistency (Gap 5):**  
-  *Computer Insight:* Section 4 claims 50,000 SKUs can be cached, but Section 7.1 bases its 36MB budget on only 15,000 SKUs! At 50k SKUs + thumbnails, storage limits on budget Android tablets will crash.
+### 1. Existing Engineering Limitations Uncovered in Jira
+* ⚙️ **WAL Concurrency is Load-Bearing (`OM-117` / KAN-20):**  
+  *Computer Insight:* Computer identified that reader/writer starvation was previously a real defect, resolved by migrating SQLite to Write-Ahead Logging (WAL) in commit `e8b2f90`. **Crucial finding:** The PRD's core concurrency promise (syncing while writing orders) depends entirely on this fix holding — Computer recommended a regression test to prevent silent backslides under load!
+* 📡 **Observability Blind Spot at Launch (`OM-118` / KAN-21):**  
+  *Computer Insight:* Client telemetry (queue depth, reconnect latency, error codes) is still *In Progress*. Computer warned that shipping before `OM-118` lands means shipping blind: headline KPIs (>99.5% sync rate, <3s latency) cannot be verified in the field!
+* 🧪 **Chaos Testing Misses Long-Offline Scenarios (`OM-116` / KAN-19):**  
+  *Computer Insight:* The CI chaos harness validates connection flapping and short blips, but does **not** exercise multi-day offline scenarios where 72h dedup TTL and 24h price windows bite.
 
-### 2. Defect Discovery & Jira Correlation
-* 🔍 **Cross-Linked 3 Related Jira Issues:**  
-  *Computer Insight:* Computer immediately identified:
-  * `OM-101`: App crash on network reconnect (`NullPointerException`).
-  * `OM-102`: Duplicate order creation when TCP ACK is dropped.
-  * `OM-105`: SQLite database locked (`sqlite3_busy`) during background catalog pull.
+### 2. Documentation Gaps Identified
+* 📑 **No Dedicated Technical Design Docs:**  
+  *Computer Insight:* Computer audited the library and found that retry logic, API reliability, and conflict resolution exist **only as summary tables in the PRD** — there were no standalone specs or runbooks behind them. *(Validating why we created `API_Design_Notes_Offline_Sync.md`!)*
 
-### 3. Financial Exposure Synthesis
-* 💰 **Direct Revenue Linkage:**  
-  Computer synthesized that **Apex Wholesale's $420,000 ARR contract** is directly threatened by Jira bug `OM-102`, turning an abstract engineering ticket into an executive priority.
+### 3. Critical PRD Risks Caught Before Code Was Written
+* ⚠️ **Idempotency Window Mismatch:** 72h Redis dedup TTL vs unbounded outbox queue (duplicate order risk on long weekends).
+* ⚠️ **Auth Token Expiration:** 4-hour JWT tokens lapse offline; sync has no re-authentication flow upon reconnect.
+* ⚠️ **Storage Budget Discrepancy:** PRD claimed 50,000 SKUs fits in 36MB, but the math was modeled on only 15,000 SKUs.
 
 ---
 
 ## Slide 6: Business Value: Empowering PMs, Engineers, and Leadership
 
 ### Slide Title: Business Value: Empowering PMs, Engineers, and Leadership
-#### Subtitle: Delivering Quantifiable ROI Across the Product-Engineering-Customer Triad
+#### Subtitle: Delivering Quantifiable ROI Across the Product-Engineering-Business Triad
 
 ```
-┌─────────────────────────────────┐   ┌─────────────────────────────────┐   ┌─────────────────────────────────┐
-│      For Product Managers       │   │      For Engineering Teams      │   │     For Executive Leadership    │
-│    "Bulletproof PRDs Faster"    │   │    "Zero-Friction Context"      │   │    "Revenue-Driven Roadmaps"    │
-├─────────────────────────────────┤   ├─────────────────────────────────┤   ├─────────────────────────────────┤
-│ • Pre-sprint risk audit catches │   │ • Eliminates bug duplication by │   │ • Real-time visibility into ARR │
-│   missing edge cases (TTL, auth)│     linking new defects to past RCAs│     at risk ($420k) from P0 bugs.   │
-│ • Validates technical feasibility│   • Auto-links PRD acceptance       │   • Eliminates departmental finger- │
-│   before development begins.    │     criteria to Jira tickets.       │     pointing between Sales & Eng.   │
-│ • Saves 2–3 weeks of back-and-  │   • Cuts triage & context switching │   • Protects Net Revenue Retention  │
-│   forth design revisions.       │     time by 40%.                    │     (NRR) and stops account churn.  │
-└─────────────────────────────────┘   └─────────────────────────────────┘   └─────────────────────────────────┘
+┌─────────────────────────────────────────┐   ┌─────────────────────────────────────────┐   ┌─────────────────────────────────────────┐
+│          For Product Managers           │   │          For Engineering Teams          │   │         For Executive Leadership        │
+│        "Bulletproof PRDs Faster"        │   │        "Zero-Friction Context"          │   │        "Revenue-Driven Roadmaps"        │
+├─────────────────────────────────────────┤   ├─────────────────────────────────────────┤   ├─────────────────────────────────────────┤
+│ • Catches missing failure states and    │   │ • Uncovers load-bearing dependencies    │   │ • Proactively surfaces technical debt   │
+│   edge cases (auth lapse, queue TTL)    │     (OM-117 WAL fix) before regressions     │     threatening feature delivery and KPIs.  │
+│   before engineering sprint kickoff.    │     happen in production.                   │ • Connects engineering issues to customer   │
+│ • Validates technical feasibility and   │   • Flags test harness gaps (chaos testing  │     trust and revenue outcomes.             │
+│   saves 2–3 weeks of redesign cycles.   │     missing multi-day offline profiles).    │ • Eliminates departmental finger-pointing   │
+│ • Audits doc coverage to ensure design  │   • Cuts bug triage and cross-referencing   │     between Product, Support, and           │
+│   depth matches requirement scope.      │     time by 40%.                            │     Engineering.                            │
+└─────────────────────────────────────────┘   └─────────────────────────────────────────┘   └─────────────────────────────────────────┘
 ```
 
 ### Quantifiable Impact Summary:
-1. **Time Saved:** 15+ hours per sprint saved across PMs and Tech Leads in manual document cross-referencing.
-2. **Defect Prevention:** Catches distributed systems edge cases (like idempotency expiration) *before* shipping to production.
-3. **Revenue Protection:** Protects high-value enterprise accounts by immediately highlighting that an $84.5k delayed pipeline is caused by an unhandled TCP timeout.
+1. **Time Saved:** 15+ hours saved per sprint per PM in manual cross-referencing and risk discovery.
+2. **Defect Prevention:** Prevents catastrophic regressions by proving that concurrency promises depend on specific past commits (`e8b2f90`).
+3. **Delivery Confidence:** Ensures telemetry (`OM-118`) lands *before* GA so headline KPIs (>99.5% sync) can actually be measured.
 
 ---
 
-## Slide 7: Role-Play Delivery Guide: The 10/10 Interview Script
+## Slide 7: Demo Storytelling & Role-Play Walkthrough
 
-### Slide Title: Role-Play Delivery Guide: 5-Minute Interview Demo Script
-#### Subtitle: Step-by-Step Storytelling Strategy & Q&A Defense for Tomorrow's Evaluation
+### Slide Title: Demo Storytelling & Role-Play Walkthrough
+#### Subtitle: Turnkey 5-Minute Interview Script & Winning Q&A Strategy
 
-### 5-Minute Role-Play Script (Word-for-Word Guide)
+### 5-Minute Role-Play Script (Word-for-Word Guide for Your Interview)
 
 #### Minute 0:00 - 1:00: Problem Framing & The Persona Hook
-> *"Hi team, today I want to show you how DevRev Computer solves one of the most frustrating problems in B2B software: the complete disconnection between customer escalations, product requirements, and engineering tickets.*
+> *"Hi everyone! Today, I want to show you how DevRev Computer solves one of the hardest challenges in software delivery: the disconnect between product documentation, engineering issue trackers, and technical debt.*
 > 
-> *Let's look at our customer: Apex Wholesale, a $420,000 ARR enterprise account with 65 sales reps in the field. Last week, during their peak expo, their reps were working in commercial basement walk-in freezers with zero cellular reception. The app froze, dumped carts, delayed $84,500 in wholesale orders, and created 38 duplicate orders when reps reconnected.*
-> 
-> *The VP of Sales threatened contract cancellation. But when this happened, Support had emails, Product had a PRD in Google Drive, and Engineering had Jira tickets. Nobody had the complete picture. Let's see how DevRev Computer changes that."*
+> *Consider our use case: Offline Mode for Mobile Order Processing. Field sales reps operate in commercial basement walk-in freezers with zero cellular reception. When apps freeze, orders are lost or duplicated on reconnect. But when teams try to build a solution, Product has a PRD in Google Drive, and Engineering has issues in Jira. Let's see how DevRev Computer bridges these silos."*
 
 #### Minute 1:00 - 2:00: Data Setup & Connectors
-> *"To solve this, we connected three systems into DevRev Computer: Google Drive for the master PRD, API notes, and RCA post-mortems; Jira for 18 engineering issues tracking bugs and stories; and our customer data tracking Apex's $420k contract.*
+> *"To demonstrate this, we connected two core systems into DevRev Computer: Google Drive containing our master PRD Google Doc, and Jira Cloud containing our engineering issues in the Devrev project.*
 > 
-> *DevRev Computer ingested these disparate sources and synthesized a single semantic knowledge graph."*
+> *DevRev Computer ingested these disparate assets and synthesized a living semantic knowledge graph connecting requirements to actual engineering records."*
 
-#### Minute 2:00 - 3:30: Live Computer Demonstration (The "Aha!" Moment)
+#### Minute 2:00 - 3:45: Conversational Interaction & Live Insights (The "Aha!" Moment)
 > *"Now, watch what happens when we converse with Computer.*
 > 
-> *First, as a Product Manager, I ask: 'Review the PRD on offline order processing. Identify risks or missing technical considerations.'*
+> *First, I asked: 'Based on the PRD, what existing bugs or technical limitations might impact this feature?'*
 > 
-> *Computer doesn't just give a summary. It performs deep systems analysis and surfaces 11 critical gaps. For example, it caught that our Redis dedup key has a 72-hour TTL, but a rep offline over a long weekend could sync on day 4 and recreate duplicate orders! It caught that our storage budget claimed 50,000 SKUs fits in 36MB, when the math was based on 15,000 SKUs.*
+> *Computer didn't just summarize text. It performed deep systems analysis across our Jira project. It discovered that our concurrency promise relies entirely on Jira issue OM-117 — a previous WAL mode migration in commit e8b2f90 — and warned us that this fix needs a guarding regression test so the UI doesn't freeze under load.*
 > 
-> *Next, as an Engineer, I ask: 'Are there any past Jira issues related to offline sync or reconnection problems?' Computer instantly correlates the PRD to Jira tickets OM-101, OM-102, and OM-105 with stack traces and root causes.*
+> *Next, it analyzed OM-118 and caught that our telemetry metrics are still In Progress, meaning we risk shipping without the instrumentation needed to measure our 99.5% sync rate KPI.*
 > 
-> *Finally, as Leadership, Computer ties that technical bug directly to the $420,000 ARR contract at risk."*
+> *Then, when asked about retry logic and API reliability documents, Computer audited our library and surfaced that these critical topics exist only as summary tables in the PRD, with no standalone design specifications behind them.*
+> 
+> *Finally, Computer synthesized 11 critical engineering risks — including a mismatch where a 72-hour dedup key could expire over a long weekend and cause duplicate orders."*
 
-#### Minute 3:30 - 5:00: Value Pitch & Close
-> *"This is the power of DevRev Computer: PMs write bulletproof PRDs before coding starts; Engineers stop wasting time on duplicate bug triage; and Leadership sees exactly which technical debt threatens customer revenue.*
+#### Minute 3:45 - 5:00: Business Value Pitch & Close
+> *"This is the transformative power of DevRev Computer: Product Managers write bulletproof specs before development starts; Engineers catch load-bearing dependencies and test coverage gaps; and Leadership gets proactive risk visibility before shipping to customers.*
 > 
-> *That is how DevRev transforms passive enterprise data into proactive, revenue-protecting intelligence. Thank you, and I’d love to answer any questions!"*
+> *That is how DevRev transforms passive documentation into active, revenue-protecting intelligence. Thank you, and I look forward to your questions!"*
 
 ---
 
-### Interviewer Q&A Defense Cheat Sheet (Anticipated Curveballs)
+### Interviewer Q&A Defense Strategy
 
 | Anticipated Interviewer Question | Recommended Winning Response |
 | :--- | :--- |
-| **"How is this different from standard ChatGPT or Notion AI?"** | *"Traditional LLMs lack deterministic entity linking and real-time enterprise connectors. DevRev Computer doesn't just parse text; it maps the relationship between Customer ARR, Jira issue keys, and PRD acceptance criteria in a unified semantic graph."* |
-| **"What if the PRD and Jira tickets have conflicting information?"** | *"That is precisely where Computer shines! As demonstrated in Gap 5, Computer explicitly flags discrepancies (e.g. 50k SKUs in the PRD vs 15k SKUs in the technical budget) so teams resolve contradictions before deployment."* |
-| **"How does this scale to hundreds of repositories and projects?"** | *"DevRev uses vector chunking with metadata filtering (e.g., scoping by project key `OM`, document type `RCA`, or customer tier `Enterprise`), ensuring high precision and sub-second retrieval at scale."* |
+| **"How does Computer know OM-117 is load-bearing?"** | *"DevRev Computer doesn't just match keywords; it analyzes semantic relationships. It recognized that the PRD's architectural requirement for concurrent local reads and writes directly maps to the SQLite WAL fix recorded in Jira issue OM-117 and commit `e8b2f90`."* |
+| **"How does this scale to larger enterprise Jira instances?"** | *"DevRev uses vector embedding search with metadata scoping. It filters by project key (e.g. `Devrev` / `OM`), issue status, and document type to deliver sub-second, highly relevant context even across hundreds of thousands of tickets."* |
+| **"What action did you take on the documentation gap Computer found?"** | *"Computer specifically flagged that retry logic and API reliability lacked standalone design docs. Because Computer surfaced this gap early, we drafted a dedicated API Design Note (`ARCH-OM-004`) to give engineering build-ready specifications."* |

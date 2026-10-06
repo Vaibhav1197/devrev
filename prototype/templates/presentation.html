@@ -10,7 +10,7 @@
   <style>
     :root {
       --bg: #090d16;
-      --card-bg: rgba(17, 24, 39, 0.85);
+      --card-bg: rgba(17, 24, 39, 0.88);
       --card-surface: #1e293b;
       --primary: #6366f1;
       --primary-light: #818cf8;
@@ -56,7 +56,7 @@
 
     /* Deck Header */
     .deck-header {
-      padding: 12px clamp(16px, 3vw, 36px);
+      padding: 10px clamp(16px, 2.5vw, 32px);
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -142,7 +142,7 @@
     .slide {
       position: absolute;
       inset: 0;
-      padding: clamp(20px, 3vh, 40px) clamp(24px, 4.5vw, 60px);
+      padding: clamp(16px, 2.5vh, 32px) clamp(20px, 3.5vw, 48px);
       display: none;
       flex-direction: column;
       overflow-y: auto;
@@ -158,10 +158,10 @@
 
     /* Typography */
     .slide-category {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.1em;
       color: var(--primary-light);
       margin-bottom: 4px;
       display: flex;
@@ -170,26 +170,26 @@
     }
     .slide-category::before {
       content: "";
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--primary-light);
       box-shadow: 0 0 8px var(--primary-light);
     }
     .slide-title {
-      font-size: clamp(24px, 2.8vw, 36px);
+      font-size: clamp(22px, 2.4vw, 32px);
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.15;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .slide-subtitle {
-      font-size: clamp(13px, 1.3vw, 15px);
+      font-size: clamp(12.5px, 1.15vw, 14.5px);
       color: var(--text-muted);
-      margin-bottom: 20px;
+      margin-bottom: 14px;
       line-height: 1.4;
     }
 
@@ -197,21 +197,21 @@
     .deck-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: clamp(14px, 2vw, 24px);
+      gap: clamp(12px, 1.6vw, 20px);
       flex: 1;
       align-content: start;
     }
     .deck-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: clamp(12px, 1.8vw, 20px);
+      gap: clamp(10px, 1.4vw, 16px);
       flex: 1;
       align-content: start;
     }
     .deck-grid-4 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      gap: 12px;
       flex: 1;
       align-content: start;
     }
@@ -220,36 +220,48 @@
     .deck-card {
       background: var(--card-bg);
       border: 1px solid var(--border-card);
-      border-radius: 12px;
-      padding: clamp(14px, 1.8vw, 22px);
+      border-radius: 10px;
+      padding: clamp(12px, 1.4vw, 18px);
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
       position: relative;
     }
     .deck-card.highlight {
       border-color: rgba(99, 102, 241, 0.5);
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(17, 24, 39, 0.9));
     }
+    .deck-card.border-amber {
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .deck-card.border-red {
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .deck-card.border-green {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    .deck-card.border-blue {
+      border-color: rgba(56, 189, 248, 0.4);
+    }
     .deck-card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
     .card-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .pill {
       font-size: 10px;
       font-weight: 800;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -260,42 +272,42 @@
     .pill-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
 
     .card-body {
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 12.5px;
+      line-height: 1.5;
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
     .card-body strong {
       color: #f1f5f9;
     }
     .card-body ul {
-      padding-left: 18px;
+      padding-left: 16px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
     .card-body li {
-      font-size: 12.5px;
+      font-size: 12px;
     }
 
     /* Metric Boxes */
     .metric-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 10px;
+      margin-bottom: 8px;
     }
     .metric-box {
       background: rgba(15, 23, 42, 0.6);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       text-align: center;
     }
     .metric-val {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       color: #fff;
       font-family: 'JetBrains Mono', monospace;
@@ -304,7 +316,7 @@
     .metric-val.success { color: #34d399; }
     .metric-val.primary { color: #818cf8; }
     .metric-lbl {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-dim);
       text-transform: uppercase;
       font-weight: 600;
@@ -315,41 +327,52 @@
     .query-card {
       background: #0f172a;
       border: 1px solid rgba(99, 102, 241, 0.35);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
+      border-radius: 9px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
     .query-prompt {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 12.5px;
       color: #38bdf8;
-      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      font-weight: 600;
     }
     .query-prompt::before {
       content: "💬";
-      font-size: 14px;
+      font-size: 13px;
     }
     .query-response {
-      font-size: 12.5px;
+      font-size: 12px;
       color: #cbd5e1;
-      line-height: 1.5;
-      padding-left: 12px;
+      line-height: 1.45;
+      padding-left: 10px;
       border-left: 2px solid var(--primary-light);
+    }
+    .query-response code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 11px;
     }
 
     /* Speaker Notes Bar (Collapsible) */
     .speaker-notes-drawer {
       background: rgba(15, 23, 42, 0.95);
       border-top: 1px solid rgba(99, 102, 241, 0.3);
-      padding: 10px clamp(16px, 3vw, 36px);
-      font-size: 12.5px;
+      padding: 8px clamp(16px, 2.5vw, 32px);
+      font-size: 12px;
       color: #e2e8f0;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-shrink: 0;
     }
     .speaker-badge {
@@ -357,7 +380,7 @@
       color: #fff;
       font-weight: 800;
       font-size: 10px;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 4px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -376,7 +399,7 @@
 
     /* Deck Footer Controls */
     .deck-footer {
-      padding: 10px clamp(16px, 3vw, 36px);
+      padding: 8px clamp(16px, 2.5vw, 32px);
       background: rgba(17, 24, 39, 0.95);
       border-top: 1px solid var(--border);
       display: flex;
@@ -412,14 +435,14 @@
       background: var(--card-surface);
       border: 1px solid var(--border-card);
       color: var(--text);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 7px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.2s;
     }
     .btn-nav:hover:not(:disabled) {
@@ -442,26 +465,44 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.82);
       z-index: 1000;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(6px);
       padding: 20px;
     }
-    .script-modal.active { display: flex; }
+    .script-modal.active {
+      display: flex;
+    }
     .script-content {
       background: #0f172a;
-      border: 1px solid var(--primary);
+      border: 1px solid rgba(99, 102, 241, 0.5);
       border-radius: 12px;
-      max-width: 800px;
+      max-width: 860px;
       width: 100%;
-      max-height: 80vh;
+      max-height: 85vh;
       overflow-y: auto;
-      padding: 28px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.4);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.7);
     }
   </style>
 </head>
@@ -476,25 +517,23 @@
   <header class="deck-header">
     <div class="brand-group">
       <div class="brand-logo-icon">D</div>
-      <div>
-        <div class="brand-title">DevRev Computer Demo Presentation</div>
-      </div>
-      <span class="badge-devrev">SE Role-Play Demo</span>
+      <div class="brand-title">DevRev Computer <span style="font-weight:400; color:var(--text-muted);">| Solutions Engineering</span></div>
+      <span class="badge-devrev">Candidate Demo Deck</span>
     </div>
     <div class="header-controls">
-      <button class="btn-header" onclick="openScriptModal()">🎙️ Full Speaker Script</button>
-      <button class="btn-header" onclick="toggleFullScreen()"><span id="fullscreenIcon">⛶</span> Fullscreen (F)</button>
-      <div class="slide-counter" id="slideIndicator">Slide 1 of 7</div>
+      <span class="slide-counter" id="slideIndicator">Slide 1 of 7</span>
+      <button class="btn-header" onclick="openScriptModal()">🎙️ 5-Min Script</button>
+      <button class="btn-header" onclick="toggleFullScreen()"><span id="fullscreenIcon">⛶</span> Fullscreen</button>
     </div>
   </header>
 
   <!-- Main Slides Canvas -->
   <main class="slides-canvas">
 
-    <!-- SLIDE 1: Problem Framing & Persona Hook -->
+    <!-- SLIDE 1: Problem Framing & Customer Hook -->
     <section class="slide active" id="slide-1">
-      <div class="slide-category">Problem Framing & Use Case Hook</div>
-      <h1 class="slide-title">The Crisis in the Cold: Why Offline Mobile Ordering Breaks Traditional CRMs</h1>
+      <div class="slide-category">Problem Framing & Customer Hook</div>
+      <h1 class="slide-title">The Offline Mobile Dilemma: Why Disconnected Systems Fail Field Operations</h1>
       <p class="slide-subtitle">How enterprise sales in cellular dead zones lead to delayed orders, duplicate billing, and contract churn — and why disconnected tools fail.</p>
       
       <div class="deck-grid-2">
@@ -506,7 +545,7 @@
           <div class="card-body">
             <p><strong>The Persona:</strong> 65 field sales representatives visiting regional grocery chains, food distributors, and restaurants across Texas, Oklahoma, and Louisiana.</p>
             <p><strong>The Operational Reality:</strong> Most order-capture takes place inside <em>reinforced basement walk-in freezers</em> with zero cellular or Wi-Fi connectivity.</p>
-            <div class="metric-row" style="margin-top: 8px;">
+            <div class="metric-row" style="margin-top: 6px;">
               <div class="metric-box">
                 <div class="metric-val danger">$84,500</div>
                 <div class="metric-lbl">Delayed Pipeline</div>
@@ -520,7 +559,7 @@
                 <div class="metric-lbl">Manual Error Spike</div>
               </div>
             </div>
-            <p style="font-size: 12px; color: #cbd5e1; border-left: 2px solid #ef4444; padding-left: 8px; font-style: italic;">
+            <p style="font-size: 11.5px; color: #cbd5e1; border-left: 2px solid #ef4444; padding-left: 8px; font-style: italic;">
               "Our top rep stood in front of a $40k client unable to submit an order. The app dumped the cart, forcing him to write on napkins like it's 1995. Fix this or we cancel in Q4." — Marcus Sterling, VP of Sales Ops
             </p>
           </div>
@@ -533,13 +572,13 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Customer Support / Success:</strong> Trapped in email threads & Zendesk tickets. They see customer anger but have zero visibility into engineering sprints.</li>
-              <li><strong>Product Management:</strong> PRD sits in Google Drive or Notion, disconnected from real-world telemetry and ongoing field escalations.</li>
-              <li><strong>Engineering Teams:</strong> Work in Jira (OM-101 to OM-118), completely blind to which customer ARR ($420k) is tied to the bug they are fixing.</li>
+              <li><strong>Customer Support / Success:</strong> Trapped in email threads & tickets. They see customer anger ($84.5k delayed pipeline) but have zero visibility into engineering sprints.</li>
+              <li><strong>Product Management:</strong> PRD sits in Google Drive or Notion, defining theoretical requirements disconnected from real-world telemetry and edge cases.</li>
+              <li><strong>Engineering Teams:</strong> Work in Jira (OM-series), fixing technical debt and setting up CI harnesses, completely blind to which customer ARR ($420k) is tied to the feature.</li>
             </ul>
-            <div style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; padding: 12px; margin-top: 6px;">
-              <strong style="color: #818cf8; font-size: 12.5px;">The Solution: DevRev Computer</strong>
-              <p style="font-size: 12px; margin-top: 4px; color: #cbd5e1;">A unified semantic knowledge graph that ingests Google Drive PRDs, Jira engineering backlogs, and customer escalations — turning passive documentation into active cross-silo intelligence.</p>
+            <div style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; padding: 10px; margin-top: 6px;">
+              <strong style="color: #818cf8; font-size: 12px;">The Solution: DevRev Computer</strong>
+              <p style="font-size: 11.5px; margin-top: 3px; color: #cbd5e1;">A unified semantic knowledge layer that ingests Google Drive PRDs, Jira engineering backlogs, and customer escalations — turning passive documentation into active cross-silo intelligence.</p>
             </div>
           </div>
         </div>
@@ -549,34 +588,34 @@
     <!-- SLIDE 2: Data Setup -->
     <section class="slide" id="slide-2">
       <div class="slide-category">Data Preparation</div>
-      <h1 class="slide-title">Data Setup: High-Fidelity Enterprise Artifacts</h1>
-      <p class="slide-subtitle">Structured multi-disciplinary data prepared across PRD specs, 18 Jira tickets, API notes, RCA post-mortems, and customer escalations.</p>
+      <h1 class="slide-title">Data Setup: Multi-Source Enterprise Artifacts</h1>
+      <p class="slide-subtitle">Structured multi-disciplinary data prepared across Google Drive PRD, Jira Cloud issues, API specs, and escalation reports.</p>
       
       <div class="deck-grid-3">
         <div class="deck-card">
           <div class="deck-card-header">
             <span class="card-title">📄 1. Master PRD Document</span>
-            <span class="pill pill-green">23 KB Spec</span>
+            <span class="pill pill-green">Google Drive</span>
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Offline Storage:</strong> Encrypted local SQLite with SQLCipher AES-256 for field security.</li>
+              <li><strong>Local Storage:</strong> Encrypted SQLite with SQLCipher AES-256 for field security.</li>
               <li><strong>Idempotency Protocol:</strong> Client-side UUIDv4 tokens with Redis 72h dedup keys.</li>
-              <li><strong>Conflict Matrix:</strong> Deterministic rules for inventory stockouts, price variances, and credit limits.</li>
+              <li><strong>Conflict Matrix:</strong> Section 5.4 rules for partial stock depletion, price revisions, and credit limits.</li>
             </ul>
           </div>
         </div>
 
-        <div class="deck-card">
+        <div class="deck-card highlight">
           <div class="deck-card-header">
-            <span class="card-title">🎟️ 2. Jira Backlog (18 Issues)</span>
-            <span class="pill pill-blue">Project OM</span>
+            <span class="card-title">🎟️ 2. Jira Cloud Backlog</span>
+            <span class="pill pill-blue">Project "Devrev"</span>
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>8 Bugs:</strong> Reconnect crash (OM-101), Duplicate orders (OM-102), ANR thread freeze (OM-103), Negative inventory (OM-108).</li>
-              <li><strong>7 Stories:</strong> Sync Center UI (OM-112), Background sync (OM-113), Encryption (OM-114).</li>
-              <li><strong>3 Tasks:</strong> Chaos testing (OM-116), WAL mode (OM-117), Telemetry metrics (OM-118).</li>
+              <li><strong>OM-116 (KAN-19):</strong> Chaos test harness in CI (Charles Proxy + Network Link Conditioner) across 5 profiles. <em>Done</em>.</li>
+              <li><strong>OM-117 (KAN-20):</strong> Migrate catalog cache to SQLite WAL mode to resolve starvation. <em>Done (commit e8b2f90)</em>.</li>
+              <li><strong>OM-118 (KAN-21):</strong> Client telemetry metrics for queue depth, sync latency, battery drain. <em>In Progress</em>.</li>
             </ul>
           </div>
         </div>
@@ -588,8 +627,8 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>REST Contract:</strong> Complete schemas for <code>POST /api/v1/orders/sync</code> and <code>GET /api/v1/catalog/delta</code>.</li>
-              <li><strong>Concurrency Guarantees:</strong> Redis SETNX distributed lock pattern and monotonic revision numbers.</li>
+              <li><strong>REST Contracts:</strong> <code>POST /api/v1/orders/sync</code> with Brotli compression and <code>GET /api/v1/catalog/delta</code>.</li>
+              <li><strong>Concurrency Guarantees:</strong> Redis SETNX distributed lock patterns, monotonic revision sequence tracking.</li>
             </ul>
           </div>
         </div>
@@ -601,9 +640,8 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Incident:</strong> 38 duplicate orders on reconnect ($46,200).</li>
-              <li><strong>Root Cause:</strong> Dropped TCP ACK over cellular tower triggered aggressive client socket retry.</li>
-              <li><strong>5 Whys & Code Diff:</strong> Full timeline and code fix.</li>
+              <li><strong>P0 Incident Post-Mortem:</strong> 38 duplicate orders on reconnect ($46,200).</li>
+              <li><strong>Root Cause:</strong> Dropped TCP ACK over cellular cell tower triggered aggressive client socket retry without server dedup check.</li>
             </ul>
           </div>
         </div>
@@ -615,8 +653,8 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Financial Exposure:</strong> $420k ARR, 65 seats, $84.5k delayed pipeline, 8.4% order error rate.</li>
-              <li><strong>Executive Owner:</strong> Marcus Sterling (VP Sales Ops) threatening competitor RFP if not fixed in v3.4.</li>
+              <li><strong>Financial Exposure:</strong> $420k ARR, 65 seats, $84.5k delayed pipeline, 8.4% order error spike.</li>
+              <li><strong>Executive Threat:</strong> VP of Sales Ops threatening competitor RFP if offline mode not resolved in v3.4.</li>
             </ul>
           </div>
         </div>
@@ -627,7 +665,7 @@
             <span class="pill pill-green">10/10 Score</span>
           </div>
           <div class="card-body">
-            <p><strong>Realistic Complexity:</strong> Real stack traces (<code>NullPointerException</code>), actual HTTP error codes, monetary ARR values, and true distributed systems failure modes.</p>
+            <p><strong>Realistic Enterprise Context:</strong> Actual commit hashes (<code>e8b2f90</code>), Jira issue keys (<code>KAN-19</code> to <code>KAN-21</code>), real HTTP status codes (<code>401</code>, <code>504</code>), and verified revenue figures.</p>
           </div>
         </div>
       </div>
@@ -647,9 +685,8 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Ingested Assets:</strong> Master PRD, API Architecture Notes, Bug RCA, and Customer Escalations.</li>
-              <li><strong>Capabilities:</strong> Parses Markdown, Google Docs, and PDFs while preserving tables, headers, and code snippets.</li>
-              <li><strong>Continuous Sync:</strong> Automatically re-indexes when product specs or design notes are edited.</li>
+              <li><strong>Ingested Assets:</strong> Master PRD Google Doc, API Design Notes, Bug RCA, and Customer Escalations.</li>
+              <li><strong>Capabilities:</strong> Ingests live documents while preserving markdown headers, tables, and code blocks with continuous sync.</li>
             </ul>
           </div>
         </div>
@@ -661,9 +698,8 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Ingested Assets:</strong> 18 Engineering tickets across Bugs, Stories, and Tasks in Project <code>OM</code>.</li>
-              <li><strong>Capabilities:</strong> Maps status workflows (To Do / In Progress / Done), priorities, components, and acceptance criteria.</li>
-              <li><strong>Bi-directional:</strong> Links developer activity and PR merges back to business work items.</li>
+              <li><strong>Ingested Assets:</strong> Project <code>Devrev</code> — OM-116, OM-117, OM-118, plus related defect catalog.</li>
+              <li><strong>Capabilities:</strong> Maps status workflows (Done / In Progress), issue priorities, components, and commit hashes (<code>e8b2f90</code>).</li>
             </ul>
           </div>
         </div>
@@ -675,34 +711,34 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Ingested Assets:</strong> Living product wikis, sprint runbooks, and customer account records ($420k ARR).</li>
-              <li><strong>Capabilities:</strong> Maps customer tier and revenue values directly to technical component epics.</li>
+              <li><strong>Ingested Assets:</strong> Team runbooks, sprint trackers, and customer account records ($420k ARR).</li>
+              <li><strong>Capabilities:</strong> Maps customer tier and ARR values directly to technical component epics.</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="deck-card highlight" style="margin-top: 14px;">
+      <div class="deck-card highlight" style="margin-top: 12px;">
         <div class="deck-card-header">
           <span class="card-title">🧠 The DevRev Computer Semantic Knowledge Graph</span>
-          <span class="pill pill-green">Graph Traversal</span>
+          <span class="pill pill-green">Multi-Hop Traversal</span>
         </div>
-        <div class="card-body" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center;">
-          <div style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-            <div style="font-size: 16px;">🏢 Customer Account</div>
-            <div style="font-size: 11px; color: #38bdf8; margin-top: 4px;">Apex Wholesale ($420k ARR)</div>
+        <div class="card-body" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center;">
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 8px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 15px;">🏢 Customer Account</div>
+            <div style="font-size: 11px; color: #38bdf8; margin-top: 2px;">Apex Wholesale ($420k ARR)</div>
           </div>
-          <div style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-            <div style="font-size: 16px;">🚨 Escalation Event</div>
-            <div style="font-size: 11px; color: #f87171; margin-top: 4px;">Cellular Dead Zone Order Drop</div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 8px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 15px;">🚨 Escalation Event</div>
+            <div style="font-size: 11px; color: #f87171; margin-top: 2px;">Cellular Dead Zone Order Drop</div>
           </div>
-          <div style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-            <div style="font-size: 16px;">🎟️ Jira Bug</div>
-            <div style="font-size: 11px; color: #fbbf24; margin-top: 4px;">OM-102 (Duplicate Orders)</div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 8px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 15px;">🎟️ Jira Issue</div>
+            <div style="font-size: 11px; color: #fbbf24; margin-top: 2px;">OM-117 (WAL Mode Fix)</div>
           </div>
-          <div style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-            <div style="font-size: 16px;">📄 Master PRD</div>
-            <div style="font-size: 11px; color: #34d399; margin-top: 4px;">FR-05 (Idempotency Engine)</div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 8px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 15px;">📄 Master PRD</div>
+            <div style="font-size: 11px; color: #34d399; margin-top: 2px;">Section 7.1 (Concurrency Promise)</div>
           </div>
         </div>
       </div>
@@ -712,30 +748,38 @@
     <section class="slide" id="slide-4">
       <div class="slide-category">Conversational Interaction</div>
       <h1 class="slide-title">Key Computer Queries: Conversational Interaction in Action</h1>
-      <p class="slide-subtitle">Natural language queries demonstrating multi-hop reasoning across product specs, engineering tickets, and customer revenue.</p>
+      <p class="slide-subtitle">The exact natural language queries run in DevRev Computer to uncover architectural limitations, documentation gaps, and engineering risks.</p>
       
-      <div style="display: flex; flex-direction: column; gap: 12px; flex: 1;">
+      <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
         <div class="query-card">
-          <div class="query-prompt">Review the PRD on offline order processing. Identify risks or missing technical considerations.</div>
+          <div class="query-prompt">"Based on the PRD, what existing bugs or technical limitations might impact this feature?"</div>
           <div class="query-response">
-            <strong>Evaluates:</strong> Architectural completeness, distributed systems edge cases, and design gaps before code is written.<br>
-            <strong>Cross-Silo Sources:</strong> Master PRD + API Design Notes. Acts as an autonomous Staff Engineer / Principal PM reviewing trade-offs.
+            <strong>Evaluates:</strong> Interrogates the Jira connector to uncover active engineering limitations that threaten the PRD's promises.<br>
+            <strong>Computer Discovery:</strong> Discovered that the PRD's concurrency promise relies on <code>OM-117</code> (SQLite WAL mode fix, commit <code>e8b2f90</code>), flagged that <code>OM-118</code> (telemetry) is still <em>In Progress</em>, and noted that <code>OM-116</code> chaos tests miss long-offline edge cases.
           </div>
         </div>
 
         <div class="query-card">
-          <div class="query-prompt">Are there any past Jira issues related to offline sync or network reconnection problems?</div>
+          <div class="query-prompt">"Are there documents related to retry logic, API reliability, or sync conflicts?"</div>
+          <div class="query-response">
+            <strong>Evaluates:</strong> Audits knowledge base to determine whether critical implementation details exist as build-ready design docs or only summary tables.<br>
+            <strong>Computer Discovery:</strong> Surfaced that the PRD is the <em>only</em> document covering these topics and only at requirement depth. Proved that zero standalone design docs, SLA runbooks, or conflict engine specs exist.
+          </div>
+        </div>
+
+        <div class="query-card">
+          <div class="query-prompt">"Summarize the main engineering risks for implementing offline order processing."</div>
+          <div class="query-response">
+            <strong>Evaluates:</strong> Synthesizes multi-system risks across Data Integrity, Reliability, Local Storage, and Security into a prioritized action list.<br>
+            <strong>Computer Discovery:</strong> Flagged 72h Redis dedup TTL vs unbounded outbox age, no dead-letter queue for poison orders, 4-hour JWT auth expiry while offline, and storage budget calculation discrepancy (50k vs 15k SKUs).
+          </div>
+        </div>
+
+        <div class="query-card">
+          <div class="query-prompt">"Are there any past Jira issues related to offline sync or network reconnection problems?"</div>
           <div class="query-response">
             <strong>Evaluates:</strong> Defect correlation across engineering sprint history.<br>
-            <strong>Cross-Silo Sources:</strong> Jira Cloud backlog (18 issues) + Bug RCA (INC-49201). Surfaces OM-101, OM-102, and OM-105 with stack traces.
-          </div>
-        </div>
-
-        <div class="query-card">
-          <div class="query-prompt">What is the business impact and revenue at risk from customer escalations tied to offline order failures?</div>
-          <div class="query-response">
-            <strong>Evaluates:</strong> Financial and customer impact synthesis for executive leadership.<br>
-            <strong>Cross-Silo Sources:</strong> Customer Escalation Brief + Jira Bug Priority. Links $420k ARR directly to backend timeout fixes.
+            <strong>Computer Discovery:</strong> Confirmed 3 OM-series items (<code>OM-116</code>, <code>OM-117</code>, <code>OM-118</code>) and revealed that no field bug reports exist yet—proving this is a greenfield feature with untested conflict rules.
           </div>
         </div>
       </div>
@@ -745,38 +789,71 @@
     <section class="slide" id="slide-5">
       <div class="slide-category">Intelligence & Analysis</div>
       <h1 class="slide-title">Insights Generated: High-Value Intelligence Surfaced by Computer</h1>
-      <p class="slide-subtitle">Deep systems analysis surfaced by DevRev Computer — catching 11 subtle architectural flaws and cross-linking defects.</p>
+      <p class="slide-subtitle">Authentic findings surfaced by DevRev Computer across Jira tasks, commit history, documentation depth, and architectural risks.</p>
       
       <div class="deck-grid-2">
-        <div class="deck-card highlight">
+        <div class="deck-card border-amber">
           <div class="deck-card-header">
-            <span class="card-title">⚠️ Critical PRD Gaps Caught by Computer</span>
-            <span class="pill pill-amber">Screenshot Evidence</span>
+            <span class="card-title">⚙️ Load-Bearing Concurrency Dependency in Jira</span>
+            <span class="pill pill-p0">OM-117 / KAN-20</span>
           </div>
           <div class="card-body">
-            <ul>
-              <li><strong>Idempotency TTL vs. Offline Mismatch:</strong> Dedup cache has 72h TTL, but there is no cap on outbox queue age. A rep offline over a long weekend could sync on day 4 and recreate duplicate orders!</li>
-              <li><strong>Pricing Grace Window vs. Route Reality:</strong> Prices honored only within 24 hours, yet rural multi-day routes exceed this. What happens at hour 30? Undefined.</li>
-              <li><strong>Offline Token Expiry:</strong> 4-hour JWT expires offline. How does the app authenticate on reconnect if credentials lapsed in a basement?</li>
-              <li><strong>Storage Budget Math Discrepancy:</strong> Section 4 claims 50k SKUs can be cached, but Section 7.1 bases its 36MB budget on only 15k SKUs! Will cause memory crashes on low-end tablets.</li>
-            </ul>
+            <p><strong>The Insight:</strong> Reader/writer starvation was previously a real defect, resolved by migrating to SQLite WAL mode with a split connection pool in commit <code>e8b2f90</code>.</p>
+            <p><strong>The Architectural Risk:</strong> The PRD's entire concurrency promise (background sync reading while the user creates orders) depends on this fix holding. Computer warned: <em>"The feature is one configuration regression away from UI freezes under load. Needs a guarding regression test, not an assumption."</em></p>
           </div>
         </div>
 
-        <div class="deck-card">
+        <div class="deck-card border-red">
           <div class="deck-card-header">
-            <span class="card-title">🔗 Cross-System Corroboration</span>
-            <span class="pill pill-green">Jira + Customer Link</span>
+            <span class="card-title">📡 Sync Observability Blind Spot at Launch</span>
+            <span class="pill pill-amber">OM-118 / KAN-21</span>
           </div>
           <div class="card-body">
-            <ul>
-              <li><strong>Instant Ticket Discovery:</strong> Surfaced 3 direct Jira tickets (OM-101 reconnect crash, OM-102 duplicate orders, OM-105 database locks) explaining the exact failure modes.</li>
-              <li><strong>Dead-Letter & Observability Need:</strong> Flagged that "Zero Data Loss" requires a poison-message dead-letter queue for permanently failing orders.</li>
-              <li><strong>Revenue Grounding:</strong> Tied Apex Wholesale's $420k ARR churn threat directly to PRD Feature FR-05 (Idempotency Key Engine).</li>
-            </ul>
-            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px; border-radius: 8px; margin-top: 8px;">
-              <span style="color: #34d399; font-weight: 700;">Key Takeaway:</span> Computer didn't just summarize; it acted as a technical reviewer, catching critical flaws <em>before</em> coding started!
-            </div>
+            <p><strong>The Insight:</strong> Client telemetry (queue depth, reconnect latency, error breakdown, battery drain) is still only <em>In Progress</em>.</p>
+            <p><strong>The Delivery Risk:</strong> Headline KPIs (>99.5% sync rate, &lt;3s sync latency, battery drain) cannot be measured in the field. Computer warned of shipping before instrumentation is in place, and noted 401 auth failures are tracked as a metric but have no corresponding fix.</p>
+          </div>
+        </div>
+
+        <div class="deck-card border-blue">
+          <div class="deck-card-header">
+            <span class="card-title">🧪 Chaos Testing Misses Long-Offline Edge Cases</span>
+            <span class="pill pill-blue">OM-116 / KAN-19</span>
+          </div>
+          <div class="card-body">
+            <p><strong>The Insight:</strong> CI network chaos harness (Charles Proxy + Network Link Conditioner) validates short flaking with a "no duplicate records" gate (Done).</p>
+            <p><strong>The Edge-Case Gap:</strong> Simulated profiles are all short-duration. They do <em>not</em> exercise multi-day offline scenarios where 72h idempotency TTL, 24h price-honor windows, and token expiry bite.</p>
+          </div>
+        </div>
+
+        <div class="deck-card border-green">
+          <div class="deck-card-header">
+            <span class="card-title">📑 Documentation Gap: Zero Standalone Design Specs</span>
+            <span class="pill pill-green">Knowledge Audit</span>
+          </div>
+          <div class="card-body">
+            <p><strong>The Insight:</strong> PRD is the <em>only</em> document covering retry logic, API reliability, and sync conflicts in the entire organization.</p>
+            <p><strong>The Engineering Gap:</strong> Everything exists only as summary tables—no backoff/retry spec, no API reliability runbook, and no conflict engine design to build against. <em>(Directly validates our API Design Notes!)</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="deck-card highlight" style="margin-top: 10px;">
+        <div class="deck-card-header">
+          <span class="card-title">⚠️ Top 4 Pre-GA Engineering Risks Identified by Computer</span>
+          <span class="pill pill-amber">Action Items</span>
+        </div>
+        <div class="card-body" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; font-size: 11.5px;">
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);">
+            <strong style="color: #f87171;">1. 72h Dedup TTL Mismatch:</strong> Outbox queue age is unbounded; syncing on day 4 recreates duplicate orders.
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);">
+            <strong style="color: #fbbf24;">2. No Dead-Letter Path:</strong> Poison orders retry infinitely with exponential backoff; no DLQ or give-up behavior.
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);">
+            <strong style="color: #38bdf8;">3. 4-Hour Auth Expiry:</strong> JWT tokens expire offline; sync worker has no defined re-authentication flow.
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);">
+            <strong style="color: #34d399;">4. Storage Math Error:</strong> PRD cites 50k SKUs, but 36MB budget is modeled on only 15k SKUs.
           </div>
         </div>
       </div>
@@ -786,7 +863,7 @@
     <section class="slide" id="slide-6">
       <div class="slide-category">Business Impact & ROI</div>
       <h1 class="slide-title">Business Value: Empowering PMs, Engineers, and Leadership</h1>
-      <p class="slide-subtitle">How DevRev Computer delivers measurable, quantifiable impact across the product-engineering-business triad.</p>
+      <p class="slide-subtitle">How DevRev Computer delivers quantifiable, measurable ROI across the product-engineering-business triad.</p>
       
       <div class="deck-grid-3">
         <div class="deck-card">
@@ -796,9 +873,9 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Pre-Sprint Stress Testing:</strong> Catches architectural edge cases (token expiry, storage budgets) before engineering commits to sprints.</li>
-              <li><strong>Saves 2–3 Weeks:</strong> Eliminates back-and-forth design revisions during active development cycles.</li>
-              <li><strong>Customer-Aligned Scope:</strong> Prioritizes requirements based on real customer revenue impact.</li>
+              <li><strong>Pre-Sprint Stress Testing:</strong> Catches architectural edge cases (auth expiry, queue TTL, storage discrepancies) before sprint kickoff.</li>
+              <li><strong>Saves 2–3 Weeks:</strong> Eliminates back-and-forth design revisions and mid-sprint scope changes.</li>
+              <li><strong>Audits Doc Coverage:</strong> Verifies whether engineering design depth matches PRD requirement scope.</li>
             </ul>
           </div>
         </div>
@@ -810,9 +887,9 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Instant Context Retrieval:</strong> Correlates new bugs to past RCAs and architectural specs in seconds.</li>
-              <li><strong>Auto-Linked Criteria:</strong> Acceptance criteria from PRDs are automatically tied to Jira tickets, eliminating ambiguity.</li>
-              <li><strong>Cuts Triage Time by 40%:</strong> Eliminates duplicate bug investigation across distributed teams.</li>
+              <li><strong>Uncovers Hidden Dependencies:</strong> Flags that concurrency relies on OM-117 (WAL fix, commit <code>e8b2f90</code>) so regressions are guarded.</li>
+              <li><strong>Highlights Test Gaps:</strong> Catches that CI chaos testing misses multi-day offline profiles.</li>
+              <li><strong>Cuts Triage Time by 40%:</strong> Correlates bugs, commits, and specs in seconds.</li>
             </ul>
           </div>
         </div>
@@ -824,15 +901,15 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Revenue at Risk Visibility:</strong> Connects open P0 technical debt directly to customer contract ARR ($420k).</li>
-              <li><strong>Eliminates Finger-Pointing:</strong> Unifies Product, Support, and Engineering on a single source of truth.</li>
-              <li><strong>Protects NRR:</strong> Prevents high-value enterprise churn through proactive defect remediation.</li>
+              <li><strong>Proactive Risk Governance:</strong> Flags uninstrumented KPIs (<code>OM-118</code> in progress) before GA launch.</li>
+              <li><strong>Connects Tech Debt to ARR:</strong> Links offline sync stability directly to Apex Wholesale's $420k contract.</li>
+              <li><strong>Eliminates Silo Blame:</strong> Provides a single verifiable source of truth across Product, Support, and Engineering.</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="deck-card highlight" style="margin-top: 14px;">
+      <div class="deck-card highlight" style="margin-top: 12px;">
         <div class="deck-card-header">
           <span class="card-title">📈 Quantifiable ROI Summary</span>
           <span class="pill pill-green">Enterprise Outcomes</span>
@@ -858,7 +935,7 @@
     <section class="slide" id="slide-7">
       <div class="slide-category">Evaluation & Demo Script</div>
       <h1 class="slide-title">Role-Play Delivery Guide: 5-Minute Interview Demo Script</h1>
-      <p class="slide-subtitle">Turnkey storytelling structure, live demonstration pacing, and winning Q&A defense for tomorrow's interview.</p>
+      <p class="slide-subtitle">Turnkey storytelling structure, live demonstration pacing, and winning Q&A defense for the interview.</p>
       
       <div class="deck-grid-2">
         <div class="deck-card highlight">
@@ -868,10 +945,10 @@
           </div>
           <div class="card-body">
             <ul>
-              <li><strong>Min 0:00–1:00 (The Hook):</strong> "Meet Apex Wholesale, a $420k ARR account. Reps in commercial walk-in freezers had orders dropped and duplicated, putting $84.5k at risk. Support had emails, Product had a Drive PRD, Engineering had Jira. Nobody had the whole story."</li>
-              <li><strong>Min 1:00–2:00 (Connectors):</strong> "We connected Google Drive, Jira Cloud, and Notion into DevRev Computer to create a single semantic knowledge graph."</li>
-              <li><strong>Min 2:00–3:30 (Live Computer Demo):</strong> "We asked Computer to review the PRD. It caught 11 critical flaws—like the 72h dedup TTL failing on long weekends! We asked for past Jira bugs, and it instantly surfaced OM-101 and OM-102 with stack traces."</li>
-              <li><strong>Min 3:30–5:00 (The Value Close):</strong> "This saves PMs weeks of rework, cuts engineering triage by 40%, and protects $420k in ARR. That's DevRev turning passive documents into revenue-protecting intelligence."</li>
+              <li><strong>Min 0:00–1:00 (The Hook):</strong> "Meet Apex Wholesale, a $420k ARR account. Reps in commercial walk-in freezers had orders dropped and duplicated, putting $84.5k at risk. Support had emails, Product had a Drive PRD, Engineering had Jira. Nobody had the complete picture."</li>
+              <li><strong>Min 1:00–2:00 (Connectors):</strong> "We connected Google Drive, Jira Cloud, and Notion into DevRev Computer to create a unified semantic knowledge graph."</li>
+              <li><strong>Min 2:00–3:45 (Live Computer Demo):</strong> "We asked Computer: <em>'What existing bugs or technical limitations impact this feature?'</em> It discovered that our concurrency promise relies on Jira issue OM-117 (WAL fix, commit <code>e8b2f90</code>) and warned us that a guarding regression test is needed. It caught that telemetry (OM-118) is still In Progress, meaning we'd ship blind. And it proved that retry and reliability exist only as summary tables in the PRD, with zero standalone design specs."</li>
+              <li><strong>Min 3:45–5:00 (Value Pitch & Close):</strong> "This saves PMs weeks of rework, prevents production regressions for engineers, and protects $420k in ARR for leadership. That's DevRev transforming passive documentation into revenue-protecting intelligence."</li>
             </ul>
           </div>
         </div>
@@ -882,14 +959,14 @@
             <span class="pill pill-blue">Winning Responses</span>
           </div>
           <div class="card-body">
-            <p><strong>Q: "How is Computer different from ChatGPT / Notion AI?"</strong><br>
-            <span style="color: #cbd5e1; font-size: 12px;">"Standard LLMs lack real-time enterprise entity-linking. Computer maps the exact relationship between Customer ARR, Jira issue keys, and PRD acceptance criteria deterministically."</span></p>
+            <p><strong>Q: "How does Computer know OM-117 is load-bearing?"</strong><br>
+            <span style="color: #cbd5e1; font-size: 11.5px;">"DevRev Computer performs deep semantic reasoning. It connected the PRD's requirement for simultaneous background sync and user order creation directly to the SQLite WAL mode fix recorded in Jira issue OM-117 and commit <code>e8b2f90</code>."</span></p>
             
-            <p><strong>Q: "What if the PRD and Jira tickets conflict?"</strong><br>
-            <span style="color: #cbd5e1; font-size: 12px;">"That is where Computer shines! It explicitly flags discrepancies (like 50k SKUs in the PRD vs 15k SKUs in the budget) so teams resolve contradictions before deployment."</span></p>
+            <p><strong>Q: "What action did you take on the documentation gap Computer found?"</strong><br>
+            <span style="color: #cbd5e1; font-size: 11.5px;">"Computer revealed that retry logic, API contracts, and conflict handling lacked standalone design specs. Because Computer flagged this early, we drafted a dedicated API Design Note (<code>ARCH-OM-004</code>) before development started."</span></p>
             
-            <p><strong>Q: "How does this scale across large enterprises?"</strong><br>
-            <span style="color: #cbd5e1; font-size: 12px;">"Through vector chunking with metadata filtering (scoping by project key OM, document type RCA, or customer tier Enterprise), ensuring sub-second precision."</span></p>
+            <p><strong>Q: "How does this scale across large enterprise instances?"</strong><br>
+            <span style="color: #cbd5e1; font-size: 11.5px;">"Through vector chunking with metadata scoping (filtering by project key <code>Devrev</code> / <code>OM</code>, document type, and customer tier), ensuring sub-second retrieval without hallucination."</span></p>
           </div>
         </div>
       </div>
@@ -901,7 +978,7 @@
   <footer class="speaker-notes-drawer">
     <span class="speaker-badge">Speaking Cue</span>
     <span class="speaker-text" id="speakerNoteText">
-      <strong>Slide 1 Cue:</strong> Open with the Apex Wholesale walk-in freezer story. Frame the business cost of disconnected tools before showing any technology.
+      <strong>Slide 1 Cue:</strong> Open with the Apex Wholesale walk-in freezer story. Frame the business cost of disconnected tools ($84.5k delayed pipeline, $420k churn risk) before showing technology.
     </span>
   </footer>
 
@@ -926,14 +1003,33 @@
   <div class="script-modal" id="scriptModal" onclick="closeScriptModal(event)">
     <div class="script-content" onclick="event.stopPropagation()">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-        <h2 style="font-size: 20px; color: #fff;">🎙️ Full 5-Minute Interview Role-Play Script</h2>
+        <h2 style="font-size: 18px; color: #fff;">🎙️ Full 5-Minute Interview Role-Play Script (Turnkey Delivery)</h2>
         <button class="btn-header" onclick="closeScriptModal()">✕ Close</button>
       </div>
-      <div style="font-size: 13.5px; line-height: 1.6; color: #cbd5e1; display: flex; flex-direction: column; gap: 14px;">
-        <p><strong style="color: #818cf8;">Minute 0:00 - 1:00 (Hook & Framing):</strong> "Hi everyone! Today I want to demonstrate how DevRev Computer solves the multi-million-dollar gap between customer escalations, product specifications, and engineering backlogs. Look at Apex Wholesale: $420k ARR account. Their sales reps visit walk-in freezers with zero cell reception. The app froze, dumped carts, delayed $84.5k in orders, and created 38 duplicate orders on reconnect. The VP of Sales threatened to cancel. But Support had emails, Product had a Drive PRD, and Engineering had Jira. Nobody had the whole picture."</p>
-        <p><strong style="color: #818cf8;">Minute 1:00 - 2:00 (Data Setup & Connectors):</strong> "We connected Google Drive (PRD, API notes, RCA), Jira (18 issues), and Notion customer records into DevRev Computer. Computer unified these into a single semantic knowledge graph."</p>
-        <p><strong style="color: #818cf8;">Minute 2:00 - 3:30 (Live Computer Demo):</strong> "We asked Computer to review the PRD. It didn't just summarize—it caught 11 critical engineering gaps, including an idempotency TTL expiration that would cause duplicate orders over long weekends, and a storage budget math error! Then we asked for past Jira defects, and it surfaced OM-101 and OM-102 with stack traces and root causes, linking them directly to the $420k ARR account at risk."</p>
-        <p><strong style="color: #818cf8;">Minute 3:30 - 5:00 (Value Pitch & Close):</strong> "This saves PMs weeks of redesign, cuts engineering triage time by 40%, and gives leadership real-time visibility into revenue at risk from technical debt. That is DevRev turning passive documentation into revenue-protecting intelligence."</p>
+      <div style="font-size: 13px; line-height: 1.6; color: #cbd5e1; display: flex; flex-direction: column; gap: 14px;">
+        <p><strong style="color: #818cf8;">Minute 0:00 - 1:00 (Hook & Problem Framing):</strong><br>
+        "Hi everyone! Today I want to show you how DevRev Computer solves one of the hardest problems in product delivery: the disconnect between customer escalations, product specifications, and engineering backlogs.<br>
+        Consider Apex Wholesale Supply Co., a $420k ARR customer. Their 65 sales reps take orders in commercial walk-in freezers with zero cellular reception. When checkout times out, reps are forced onto paper napkins. When devices reconnect, unhandled state transitions cause app crashes and duplicate orders. That resulted in $84.5k in delayed orders, 38 duplicate charges, and a direct churn threat from their VP of Sales Ops.<br>
+        In traditional companies, Customer Support has emails, Product has a PRD in Google Drive, and Engineering has tickets in Jira. Nobody has the full picture."</p>
+
+        <p><strong style="color: #818cf8;">Minute 1:00 - 2:00 (Data Setup & Connectors):</strong><br>
+        "To break these silos, we ingested three core sources into DevRev Computer: our master PRD Google Doc from Google Drive, our Jira engineering backlog from the Devrev project, and our customer escalation reports.<br>
+        DevRev Computer built a unified semantic knowledge graph that maps Customer ARR directly to Jira tickets, commit hashes, and PRD requirements."</p>
+
+        <p><strong style="color: #818cf8;">Minute 2:00 - 3:45 (Conversational Interaction & Live Insights):</strong><br>
+        "Now, watch what happens when we converse with Computer.<br>
+        First, I asked: <em>'Based on the PRD, what existing bugs or technical limitations might impact this feature?'</em><br>
+        Computer didn't just search keywords. It analyzed our Jira backlog and caught that our PRD's entire concurrency promise depends on Jira issue OM-117 — a previous SQLite WAL mode migration in commit e8b2f90. Computer warned us: this fix needs a guarding regression test, otherwise we are one configuration regression away from UI freezes under load.<br>
+        Next, it flagged that OM-118 — client telemetry metrics — is still In Progress, meaning we risk shipping without the instrumentation needed to measure our headline KPI of a 99.5% sync rate.<br>
+        Then, when asked about retry logic and API reliability documents, Computer audited our library and surfaced that these critical topics exist only as summary tables inside the PRD, with zero standalone design specifications behind them.<br>
+        Finally, Computer synthesized our top engineering risks before GA — including an idempotency mismatch where a 72-hour Redis dedup key could expire over a long weekend and cause duplicate orders upon sync."</p>
+
+        <p><strong style="color: #818cf8;">Minute 3:45 - 5:00 (Business Value & Close):</strong><br>
+        "This demonstrates the transformative business value of DevRev Computer:<br>
+        For Product Managers, it catches architectural flaws and edge cases before engineering starts, saving 2 to 3 weeks of redesign.<br>
+        For Engineering Teams, it uncovers load-bearing dependencies like OM-117 and test coverage gaps, cutting triage time by 40%.<br>
+        And for Leadership, it provides proactive risk visibility, connecting engineering tasks directly to $420k in protected ARR.<br>
+        That is how DevRev transforms passive documentation into revenue-protecting intelligence. Thank you, and I look forward to your questions!"</p>
       </div>
     </div>
   </div>
@@ -944,10 +1040,10 @@
 
     const speakerNotes = [
       "Slide 1 Cue: Open with the Apex Wholesale walk-in freezer story. Frame the business cost of disconnected tools ($84.5k delayed pipeline, $420k churn risk) before showing technology.",
-      "Slide 2 Cue: Highlight high data fidelity. Mention the 18 Jira issues (8 bugs, 7 stories, 3 tasks), PRD, API contracts, and P0 RCA. Show that this is realistic enterprise data.",
-      "Slide 3 Cue: Explain the 3 connectors (Google Drive, Jira, Notion) and how DevRev's semantic knowledge graph maps Customer ARR ↔ Bug ↔ PRD.",
-      "Slide 4 Cue: Walk through the 3 natural language queries. Highlight that Computer reasons across multiple systems without manual JQL or SQL queries.",
-      "Slide 5 Cue: The 'Aha!' moment. Point out the screenshot evidence: 11 PRD gaps (TTL mismatch, auth token expiry, storage budget math error) caught before coding!",
+      "Slide 2 Cue: Highlight high data fidelity. Mention Google Drive PRD, Jira issues (OM-116 chaos, OM-117 WAL, OM-118 telemetry), API specs, and P0 RCA.",
+      "Slide 3 Cue: Explain the connectors (Google Drive, Jira, Notion) and how DevRev's semantic knowledge graph connects Customer ARR ↔ Jira Key ↔ PRD.",
+      "Slide 4 Cue: Walk through the 4 natural language queries used in Computer. Emphasize multi-hop reasoning across specs, Jira, and commit history.",
+      "Slide 5 Cue: The 'Aha!' moment. Point out Computer discovering the OM-117 WAL dependency (commit e8b2f90), the OM-118 telemetry gap, and missing design docs.",
       "Slide 6 Cue: Deliver the business ROI pitch. Cover PMs (2-3 weeks saved), Engineers (40% triage reduction), and Leadership ($420k ARR protected).",
       "Slide 7 Cue: Conclude with the 5-minute role-play closing and show confidence on anticipated interviewer Q&A defense."
     ];
