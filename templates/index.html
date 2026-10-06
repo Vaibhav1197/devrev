@@ -28,6 +28,18 @@
     </div>
     
     <div class="nav-right">
+      <div class="role-selector-group">
+        <span class="role-label">👤 Role:</span>
+        <select id="userRoleSelect" class="role-select" onchange="switchUserRole(this.value)">
+          <option value="solutions_engineer">Alex Rivera (Staff SE Lead)</option>
+          <option value="support_agent">Jordan Taylor (Support Tier 2)</option>
+          <option value="vp_engineering">Marcus Vance (VP Engineering)</option>
+        </select>
+      </div>
+      <button class="btn btn-copilot" onclick="toggleCopilotDrawer()">
+        <span>🤖</span>
+        <span>AI Copilot</span>
+      </button>
       <button class="btn btn-secondary" onclick="openPresentationModal()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Walkthrough Slides
@@ -354,6 +366,46 @@
       </form>
     </div>
   </div>
+
+  <!-- ==================== AI COPILOT DRAWER ==================== -->
+  <aside class="copilot-drawer" id="copilotDrawer">
+    <div class="copilot-header">
+      <div class="copilot-title-group">
+        <div class="copilot-icon">🤖</div>
+        <div>
+          <h3 class="copilot-title">DevRev Support Copilot</h3>
+          <span class="copilot-subtitle">Semantic AI Assistant over Support Data</span>
+        </div>
+      </div>
+      <button class="close-btn" onclick="toggleCopilotDrawer()">&times;</button>
+    </div>
+
+    <div class="copilot-quick-prompts">
+      <span class="quick-prompt-label">Quick Queries:</span>
+      <div class="chip-container">
+        <button class="chip" onclick="askCopilot('Which customer has the highest revenue at risk?')">💰 Highest ARR at Risk</button>
+        <button class="chip" onclick="askCopilot('Summarize all P0 blocker issues')">🚨 P0 Blockers</button>
+        <button class="chip" onclick="askCopilot('What tickets relate to mobile offline sync?')">📱 Mobile Sync Issues</button>
+        <button class="chip" onclick="askCopilot('Give me an executive briefing of open issues')">📊 Executive Briefing</button>
+      </div>
+    </div>
+
+    <div class="copilot-messages" id="copilotMessages">
+      <div class="copilot-msg bot-msg">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-bubble">
+          Hello! I'm your DevRev AI Copilot. Ask me anything about tickets, revenue at risk, recurring bugs, or customer escalations.
+        </div>
+      </div>
+    </div>
+
+    <div class="copilot-input-area">
+      <input type="text" id="copilotInput" placeholder="Ask about tickets, ARR, or bugs..." onkeydown="handleCopilotKey(event)">
+      <button class="btn btn-primary btn-send" onclick="sendCopilotMessage()" title="Send Query">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </aside>
 
   <!-- Toast Notification Container -->
   <div id="toastContainer" class="toast-container"></div>

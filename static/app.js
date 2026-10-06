@@ -381,3 +381,118 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+// ==================== ROLE SWITCHER (BONUS FEATURE) ====================
+
+async function switchUserRole(roleId) {
+  try {
+    const res = await fetch("/api/auth/switch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ role_id: roleId })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`Active User: ${data.user.name} (${data.user.role})`, "info");
+    }
+  } catch (err) {
+    console.error("Role switch error:", err);
+  }
+}
+
+// ==================== AI COPILOT DRAWER (BONUS FEATURE) ====================
+
+function toggleCopilotDrawer() {
+  const drawer = document.getElementById("copilotDrawer");
+  drawer.classList.toggle("active");
+  if (drawer.classList.contains("active")) {
+    document.getElementById("copilotInput").focus();
+  }
+}
+
+function handleCopilotKey(e) {
+  if (e.key === "Enter") {
+    sendCopilotMessage();
+  }
+}
+
+function askCopilot(promptText) {
+  document.getElementById("copilotInput").value = promptText;
+  sendCopilotMessage();
+}
+
+async function sendCopilotMessage() {
+  const input = document.getElementById("copilotInput");
+  const prompt = input.value.trim();
+  if (!prompt) return;
+
+  const messagesContainer = document.getElementById("copilotMessages");
+
+  // Append user message
+  const userMsg = document.createElement("div");
+  userMsg.className = "copilot-msg user-msg";
+  userMsg.innerHTML = `<div class="msg-bubble">${escapeHtml(prompt)}</div>`;
+  messagesContainer.appendChild(userMsg);
+  input.value = "";
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+  // Typing indicator
+  const typingMsg = document.createElement("div");
+  typingMsg.className = "copilot-msg bot-msg";
+  typingMsg.id = "copilotTyping";
+  typingMsg.innerHTML = `
+    <div class="msg-avatar">🤖</div>
+    <div class="msg-bubble" style="color: var(--text-muted); font-style: italic;">
+      Analyzing live support tickets &amp; revenue context...
+    </div>
+  `;
+  messagesContainer.appendChild(typingMsg);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+  try {
+    const res = await fetch("/api/ai/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: prompt })
+    });
+    const data = await res.json();
+    typingMsg.remove();
+
+    if (data.success) {
+      const botMsg = document.createElement("div");
+      botMsg.className = "copilot-msg bot-msg";
+      // Convert basic markdown formatting (bold, bullet points)
+      let formatted = escapeHtml(data.response)
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/`(.*?)`/g, "<code>$1</code>")
+        .replace(/\n/g, "<br>");
+
+      botMsg.innerHTML = `
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-bubble">${formatted}</div>
+      `;
+      messagesContainer.appendChild(botMsg);
+    } else {
+      const errorMsg = document.createElement("div");
+      errorMsg.className = "copilot-msg bot-msg";
+      errorMsg.innerHTML = `
+        <div class="msg-avatar">⚠️</div>
+        <div class="msg-bubble" style="color: #f87171;">${escapeHtml(data.error || "Failed to analyze query")}</div>
+      `;
+      messagesContainer.appendChild(errorMsg);
+    }
+  } catch (err) {
+    typingMsg.remove();
+    console.error("Copilot error:", err);
+    const errorMsg = document.createElement("div");
+    errorMsg.className = "copilot-msg bot-msg";
+    errorMsg.innerHTML = `
+      <div class="msg-avatar">⚠️</div>
+      <div class="msg-bubble" style="color: #f87171;">Network error contacting DevRev Copilot service.</div>
+    `;
+    messagesContainer.appendChild(errorMsg);
+  } finally {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+}
+

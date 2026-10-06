@@ -9,3 +9,4 @@ venv/
 *.db-journal
 .DS_Store
 Thumbs.db
+archive_devrev_computer_session/
