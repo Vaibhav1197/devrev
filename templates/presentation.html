@@ -3,720 +3,1084 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevRev SupportIQ — Walkthrough Presentation (Rapid Prototype Challenge)</title>
+  <title>DevRev SupportIQ — Solutions Engineer Prototype Walkthrough</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #090d16;
-      --card-bg: rgba(17, 24, 39, 0.88);
-      --card-surface: #1e293b;
+      --bg: #0a0a0f;
+      --surface-1: #111118;
+      --surface-2: #1a1a24;
+      --surface-3: #22222e;
       --primary: #6366f1;
-      --primary-light: #818cf8;
-      --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      --border: #1e293b;
-      --border-card: #334155;
-      --accent-green: #10b981;
+      --primary-glow: rgba(99, 102, 241, 0.15);
+      --accent-violet: #a855f7;
+      --accent-pink: #ec4899;
+      --accent-cyan: #22d3ee;
+      --accent-emerald: #10b981;
       --accent-amber: #f59e0b;
       --accent-red: #ef4444;
-      --accent-blue: #38bdf8;
+      --text-white: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-dim: #64748b;
+      --border: rgba(255,255,255,0.06);
+      --border-accent: rgba(99, 102, 241, 0.3);
+      --gradient-hero: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      --gradient-dark: linear-gradient(180deg, rgba(99,102,241,0.08) 0%, transparent 60%);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     html, body {
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       overflow: hidden;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
+      color: var(--text-white);
     }
 
-    /* Top Progress Bar */
-    .progress-bar-track {
-      width: 100%;
-      height: 4px;
-      background: rgba(30, 41, 59, 0.6);
-      position: relative;
-      z-index: 100;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
-      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      width: 16.66%;
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+    /* ── Layout Shell ── */
+    .deck-shell {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
     }
 
-    /* Deck Header */
-    .deck-header {
-      padding: 10px clamp(16px, 2.5vw, 32px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(17, 24, 39, 0.95);
-      backdrop-filter: blur(12px);
+    /* ── Top Bar ── */
+    .top-bar {
+      height: 3px; width: 100%;
+      background: var(--surface-2);
       flex-shrink: 0;
     }
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .brand-logo-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: var(--primary-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 16px;
-      color: #fff;
-    }
-    .brand-title {
-      font-weight: 700;
-      font-size: 15px;
-      letter-spacing: -0.01em;
-    }
-    .badge-devrev {
-      background: rgba(99, 102, 241, 0.2);
-      border: 1px solid rgba(99, 102, 241, 0.4);
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--primary-light);
-    }
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .slide-counter {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: var(--text-muted);
-      background: rgba(30, 41, 59, 0.6);
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-    }
-    .btn-header {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-    .btn-header:hover {
-      background: var(--card-surface);
-      border-color: var(--primary-light);
-      color: #fff;
+    .top-bar-fill {
+      height: 100%;
+      background: var(--gradient-hero);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 20px rgba(99,102,241,0.5);
     }
 
-    /* Main Slides Canvas */
-    .slides-canvas {
-      flex: 1;
-      width: 100%;
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      display: flex;
+    /* ── Header ── */
+    .deck-header {
+      padding: 8px 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(17, 17, 24, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .brand-icon {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--gradient-hero);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; color: #fff;
+    }
+    .brand-name {
+      font-weight: 700; font-size: 13px; color: var(--text-white);
+    }
+    .brand-name span { font-weight: 400; color: var(--text-dim); }
+    .header-badge {
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.3);
+      padding: 2px 8px; border-radius: 999px;
+      font-size: 10px; font-weight: 700; color: #818cf8;
+      letter-spacing: 0.02em;
+    }
+    .header-right {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .slide-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--text-dim);
+      background: var(--surface-2);
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .h-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 4px 10px; border-radius: 5px;
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .h-btn:hover {
+      background: var(--surface-2);
+      color: #fff; border-color: var(--border-accent);
+    }
+
+    /* ── Slide Canvas ── */
+    .canvas {
+      flex: 1; width: 100%; position: relative; overflow: hidden;
     }
     .slide {
-      position: absolute;
-      inset: 0;
-      padding: clamp(16px, 2.5vh, 32px) clamp(20px, 3.5vw, 48px);
-      display: none;
-      flex-direction: column;
-      overflow-y: auto;
-      animation: slideIn 0.25s ease-out;
+      position: absolute; inset: 0;
+      display: none; flex-direction: column;
+      animation: fadeUp 0.3s ease-out;
     }
-    .slide.active {
-      display: flex;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(8px); }
+    .slide.active { display: flex; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Typography */
-    .slide-category {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--primary-light);
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* ── Slide Internal Layout ── */
+    .slide-inner {
+      flex: 1; display: flex; flex-direction: column;
+      padding: 28px 40px 16px;
+      overflow-y: auto;
     }
-    .slide-category::before {
-      content: "";
-      width: 7px;
-      height: 7px;
+    .slide-header {
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+    .slide-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: #818cf8;
+      margin-bottom: 6px;
+    }
+    .slide-tag::before {
+      content: ""; width: 6px; height: 6px;
       border-radius: 50%;
-      background: var(--primary-light);
-      box-shadow: 0 0 8px var(--primary-light);
+      background: #818cf8;
+      box-shadow: 0 0 8px #818cf8;
     }
-    .slide-title {
-      font-size: clamp(22px, 2.4vw, 32px);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin-bottom: 4px;
-      background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
+    .slide-h1 {
+      font-size: clamp(26px, 2.8vw, 38px);
+      font-weight: 900; letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .slide-subtitle {
-      font-size: clamp(12.5px, 1.15vw, 14.5px);
-      color: var(--text-muted);
-      margin-bottom: 14px;
-      line-height: 1.4;
+    .slide-sub {
+      font-size: clamp(13px, 1.1vw, 15px);
+      color: var(--text-secondary);
+      margin-top: 6px; line-height: 1.45;
+      max-width: 700px;
+    }
+    .slide-body {
+      flex: 1; display: flex; flex-direction: column;
+      gap: 16px;
     }
 
-    /* Grid Layouts */
-    .deck-grid-2 {
+    /* ── KPI Hero Row ── */
+    .kpi-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(12px, 1.6vw, 20px);
-      flex: 1;
-      align-content: start;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
-    .deck-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: clamp(10px, 1.4vw, 16px);
-      flex: 1;
-      align-content: start;
-    }
-
-    /* Cards */
-    .deck-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-card);
-      border-radius: 10px;
-      padding: clamp(12px, 1.4vw, 18px);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    .kpi-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex; flex-direction: column;
       position: relative;
+      overflow: hidden;
     }
-    .deck-card.highlight {
-      border-color: rgba(99, 102, 241, 0.5);
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(17, 24, 39, 0.9));
+    .kpi-card::before {
+      content: "";
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
     }
-    .deck-card.border-amber { border-color: rgba(245, 158, 11, 0.4); }
-    .deck-card.border-red { border-color: rgba(239, 68, 68, 0.4); }
-    .deck-card.border-green { border-color: rgba(16, 185, 129, 0.4); }
-    .deck-card.border-blue { border-color: rgba(56, 189, 248, 0.4); }
+    .kpi-card.kpi-red::before { background: var(--accent-red); box-shadow: 0 0 12px var(--accent-red); }
+    .kpi-card.kpi-amber::before { background: var(--accent-amber); box-shadow: 0 0 12px var(--accent-amber); }
+    .kpi-card.kpi-emerald::before { background: var(--accent-emerald); box-shadow: 0 0 12px var(--accent-emerald); }
+    .kpi-card.kpi-primary::before { background: var(--primary); box-shadow: 0 0 12px var(--primary); }
+    .kpi-card.kpi-cyan::before { background: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-cyan); }
+    .kpi-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: clamp(28px, 2.8vw, 42px);
+      font-weight: 900; letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .kpi-value.red { color: var(--accent-red); }
+    .kpi-value.amber { color: var(--accent-amber); }
+    .kpi-value.emerald { color: var(--accent-emerald); }
+    .kpi-value.primary { color: #818cf8; }
+    .kpi-value.cyan { color: var(--accent-cyan); }
+    .kpi-value.white { color: #fff; }
+    .kpi-detail {
+      font-size: 11px; color: var(--text-dim);
+      margin-top: 4px;
+    }
 
-    .deck-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+    /* ── Content Grid ── */
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; flex: 1;
+    }
+    .grid-3 {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; flex: 1;
+    }
+    .grid-2-1 {
+      display: grid; grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px; flex: 1;
+    }
+
+    /* ── Content Cards ── */
+    .card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      display: flex; flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card.glow-primary {
+      border-color: rgba(99,102,241,0.25);
+      background: linear-gradient(145deg, rgba(99,102,241,0.06), var(--surface-1));
+    }
+    .card.glow-emerald {
+      border-color: rgba(16,185,129,0.25);
+      background: linear-gradient(145deg, rgba(16,185,129,0.04), var(--surface-1));
+    }
+    .card.glow-amber {
+      border-color: rgba(245,158,11,0.25);
+      background: linear-gradient(145deg, rgba(245,158,11,0.04), var(--surface-1));
+    }
+    .card.glow-red {
+      border-color: rgba(239,68,68,0.25);
+      background: linear-gradient(145deg, rgba(239,68,68,0.04), var(--surface-1));
+    }
+    .card.glow-cyan {
+      border-color: rgba(34,211,238,0.25);
+      background: linear-gradient(145deg, rgba(34,211,238,0.04), var(--surface-1));
+    }
+
+    .card-icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .card-icon.bg-primary { background: rgba(99,102,241,0.15); }
+    .card-icon.bg-emerald { background: rgba(16,185,129,0.15); }
+    .card-icon.bg-amber { background: rgba(245,158,11,0.15); }
+    .card-icon.bg-red { background: rgba(239,68,68,0.15); }
+    .card-icon.bg-cyan { background: rgba(34,211,238,0.15); }
+    .card-icon.bg-pink { background: rgba(236,72,153,0.15); }
+
+    .card-top {
+      display: flex; align-items: center; gap: 10px;
     }
     .card-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 15px; font-weight: 800; color: #fff;
+      letter-spacing: -0.01em;
     }
     .pill {
-      font-size: 10px;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      font-size: 9px; font-weight: 800;
+      padding: 2px 7px; border-radius: 999px;
+      text-transform: uppercase; letter-spacing: 0.04em;
     }
-    .pill-p0 { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .pill-green { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .pill-amber { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .pill-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .pill-red { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .pill-emerald { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+    .pill-amber { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .pill-primary { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+    .pill-cyan { background: rgba(34,211,238,0.15); color: #67e8f9; border: 1px solid rgba(34,211,238,0.3); }
 
     .card-body {
-      font-size: 12.5px;
-      line-height: 1.5;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .card-body strong { color: #f1f5f9; }
-    .card-body ul {
-      padding-left: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .card-body li { font-size: 12px; }
-
-    /* Code blocks in cards */
-    .code-box {
-      background: #0f172a;
-      border: 1px solid var(--border-card);
-      border-radius: 6px;
-      padding: 8px 12px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      color: #38bdf8;
-      line-height: 1.45;
-    }
-
-    /* Speaker Notes Bar (Collapsible) */
-    .speaker-notes-drawer {
-      background: rgba(15, 23, 42, 0.95);
-      border-top: 1px solid rgba(99, 102, 241, 0.3);
-      padding: 8px clamp(16px, 2.5vw, 32px);
-      font-size: 12px;
-      color: #e2e8f0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-    .speaker-badge {
-      background: var(--primary-gradient);
-      color: #fff;
-      font-weight: 800;
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      flex-shrink: 0;
-    }
-    .speaker-text {
+      font-size: 12.5px; line-height: 1.55; color: var(--text-secondary);
+      display: flex; flex-direction: column; gap: 6px;
       flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #cbd5e1;
+    }
+    .card-body strong { color: #e2e8f0; }
+    .card-body ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .card-body li {
+      font-size: 12.5px; padding-left: 16px;
+      position: relative;
+    }
+    .card-body li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--primary); font-weight: 700;
     }
 
-    /* Deck Footer Controls */
+    /* ── Code Box ── */
+    .code-box {
+      background: rgba(15,23,42,0.7);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; line-height: 1.5;
+      color: var(--accent-cyan);
+    }
+
+    /* ── Architecture Diagram ── */
+    .arch-diagram {
+      display: flex; flex-direction: column; gap: 0;
+      flex: 1;
+    }
+    .arch-layer {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .arch-layer + .arch-connector {
+      display: flex; align-items: center; justify-content: center;
+      height: 28px;
+    }
+    .arch-connector-line {
+      width: 2px; height: 100%;
+      background: linear-gradient(180deg, var(--primary), var(--accent-violet));
+    }
+    .arch-layer-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .arch-layer-icon.fe { background: rgba(34,211,238,0.12); }
+    .arch-layer-icon.be { background: rgba(99,102,241,0.12); }
+    .arch-layer-icon.db { background: rgba(245,158,11,0.12); }
+    .arch-layer-info { flex: 1; }
+    .arch-layer-title {
+      font-size: 14px; font-weight: 800; color: #fff;
+    }
+    .arch-layer-desc {
+      font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;
+      margin-top: 2px;
+    }
+    .arch-layer-tech {
+      display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;
+    }
+    .tech-tag {
+      font-size: 9.5px; font-weight: 700;
+      padding: 2px 7px; border-radius: 4px;
+      background: var(--surface-3);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Visual Bar Charts ── */
+    .bar-chart {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .bar-item {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .bar-label {
+      font-size: 11px; font-weight: 600; color: var(--text-secondary);
+      width: 120px; flex-shrink: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .bar-track {
+      flex: 1; height: 22px;
+      background: var(--surface-2);
+      border-radius: 6px; overflow: hidden;
+      position: relative;
+    }
+    .bar-fill {
+      height: 100%; border-radius: 6px;
+      display: flex; align-items: center;
+      padding: 0 8px;
+      font-size: 10px; font-weight: 800; color: #fff;
+      transition: width 0.6s ease;
+    }
+    .bar-fill.red { background: linear-gradient(90deg, #ef4444, #f87171); }
+    .bar-fill.amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .bar-fill.emerald { background: linear-gradient(90deg, #10b981, #34d399); }
+    .bar-fill.primary { background: linear-gradient(90deg, #6366f1, #818cf8); }
+    .bar-fill.cyan { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+
+    /* ── Footer ── */
     .deck-footer {
-      padding: 8px clamp(16px, 2.5vw, 32px);
-      background: rgba(17, 24, 39, 0.95);
+      padding: 6px 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(17,17,24,0.95);
       border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       flex-shrink: 0;
     }
-    .step-dots {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    .dots { display: flex; gap: 6px; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--surface-3);
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer; transition: all 0.2s;
     }
-    .dot-step {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--card-surface);
-      border: 1px solid var(--border-card);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .dot-step.active {
-      background: var(--primary-light);
-      border-color: var(--primary);
+    .dot.active {
+      background: #818cf8;
+      box-shadow: 0 0 10px rgba(99,102,241,0.5);
       transform: scale(1.3);
-      box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
     }
-    .nav-btn-group {
-      display: flex;
-      gap: 8px;
-    }
-    .btn-nav {
-      background: var(--card-surface);
-      border: 1px solid var(--border-card);
-      color: var(--text);
-      padding: 7px 14px;
-      border-radius: 7px;
-      font-size: 12.5px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+    .nav-btns { display: flex; gap: 6px; }
+    .nav-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 5px 12px; border-radius: 6px;
+      font-size: 11px; font-weight: 700; cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-nav:hover:not(:disabled) {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary-light);
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary); color: #fff;
+      border-color: var(--primary);
     }
-    .btn-nav:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
-    .btn-nav.primary {
-      background: var(--primary-gradient);
-      color: #fff;
-      border: none;
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .nav-btn.primary-btn {
+      background: var(--gradient-hero); color: #fff; border: none;
     }
 
-    /* Modal for Full Speaker Script */
-    .script-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.82);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
+    /* ── Speaker Notes ── */
+    .speaker-bar {
+      padding: 5px 28px;
+      background: rgba(15,23,42,0.95);
+      border-top: 1px solid var(--border-accent);
+      display: flex; align-items: center; gap: 8px;
+      flex-shrink: 0;
+    }
+    .speaker-tag {
+      background: var(--gradient-hero);
+      color: #fff; font-size: 9px; font-weight: 800;
+      padding: 2px 6px; border-radius: 3px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+    .speaker-txt {
+      font-size: 11px; color: #94a3b8;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000; align-items: center; justify-content: center;
       padding: 20px;
     }
-    .script-modal.active { display: flex; }
-    .script-content {
-      background: #0f172a;
-      border: 1px solid rgba(99, 102, 241, 0.5);
-      border-radius: 12px;
-      max-width: 860px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--surface-1);
+      border: 1px solid var(--border-accent);
+      border-radius: 14px;
+      max-width: 840px; width: 100%;
+      max-height: 85vh; overflow-y: auto;
       padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    /* ── Highlight text ── */
+    .hl { color: #818cf8; font-weight: 700; }
+    .hl-red { color: #f87171; font-weight: 700; }
+    .hl-emerald { color: #34d399; font-weight: 700; }
+    .hl-amber { color: #fbbf24; font-weight: 700; }
+    .hl-cyan { color: #67e8f9; font-weight: 700; }
+
+    /* ── Fullwidth card ── */
+    .card-full {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 22px;
+    }
+
+    /* ── Impact Quote ── */
+    .impact-quote {
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.06));
+      border-left: 3px solid var(--primary);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      font-size: 14px; font-weight: 600;
+      color: #e2e8f0; line-height: 1.4;
+      font-style: italic;
+    }
+
+    /* ── Flow Steps ── */
+    .flow-steps {
+      display: flex; gap: 0; align-items: stretch;
+    }
+    .flow-step {
+      flex: 1;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex; flex-direction: column; gap: 6px;
+      position: relative;
+    }
+    .flow-arrow {
+      display: flex; align-items: center; justify-content: center;
+      width: 28px; flex-shrink: 0;
+      font-size: 18px; color: var(--primary);
+    }
+    .flow-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--gradient-hero);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 900; color: #fff;
+      flex-shrink: 0;
+    }
+    .flow-title {
+      font-size: 13px; font-weight: 800; color: #fff;
+    }
+    .flow-desc {
+      font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;
     }
   </style>
 </head>
 <body>
+<div class="deck-shell">
 
-  <!-- Top Progress Bar -->
-  <div class="progress-bar-track">
-    <div class="progress-bar-fill" id="progressBar"></div>
-  </div>
+  <!-- Top progress -->
+  <div class="top-bar"><div class="top-bar-fill" id="progressBar" style="width:16.66%"></div></div>
 
-  <!-- Deck Header -->
+  <!-- Header -->
   <header class="deck-header">
-    <div class="brand-group">
-      <div class="brand-logo-icon">D</div>
-      <div class="brand-title">DevRev SupportIQ <span style="font-weight:400; color:var(--text-muted);">| Solutions Engineer Prototype</span></div>
-      <span class="badge-devrev">Rapid Prototype Walkthrough</span>
+    <div class="brand">
+      <div class="brand-icon">D</div>
+      <div class="brand-name">DevRev SupportIQ <span>| Solutions Engineer Challenge</span></div>
+      <span class="header-badge">Rapid Prototype</span>
     </div>
-    <div class="header-controls">
-      <span class="slide-counter" id="slideIndicator">Slide 1 of 6</span>
-      <button class="btn-header" onclick="openScriptModal()">🎙️ 5-Min Walkthrough Script</button>
-      <button class="btn-header" onclick="toggleFullScreen()"><span id="fullscreenIcon">⛶</span> Fullscreen</button>
+    <div class="header-right">
+      <span class="slide-num" id="slideNum">1 / 6</span>
+      <button class="h-btn" onclick="openModal()">🎙️ Script</button>
+      <button class="h-btn" onclick="toggleFS()">⛶ Fullscreen</button>
     </div>
   </header>
 
-  <!-- Main Slides Canvas -->
-  <main class="slides-canvas">
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDES -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <main class="canvas">
 
-    <!-- SLIDE 1: Problem Scenario -->
-    <section class="slide active" id="slide-1">
-      <div class="slide-category">Step 1: Problem Scenario</div>
-      <h1 class="slide-title">Problem Scenario: Why We Built DevRev SupportIQ</h1>
-      <p class="slide-subtitle">A modern customer support & defect orchestration portal bridging the gap between field customer escalations and engineering resolution.</p>
-      
-      <div class="deck-grid-2">
-        <div class="deck-card highlight">
-          <div class="deck-card-header">
-            <span class="card-title">🏢 The Real-World Customer Crisis</span>
-            <span class="pill pill-p0">$84.5K At Risk</span>
-          </div>
-          <div class="card-body">
-            <p><strong>The Scenario:</strong> Field sales representatives (e.g. Apex Wholesale, 65 reps) operate in steel-reinforced basement walk-in freezers with zero cellular reception.</p>
-            <p><strong>The Operational Breakdown:</strong></p>
-            <ul>
-              <li>Orders freeze at checkout with <code>HTTP 504 Gateway Timeout</code>.</li>
-              <li>Reconnection triggers duplicate order creation ($46,200 duplicated).</li>
-              <li>Support teams are overwhelmed with urgent emails, while product managers and engineering squads remain blind to the revenue impact.</li>
-            </ul>
-          </div>
+    <!-- ─── SLIDE 1 : PROBLEM & IMPACT ─── -->
+    <section class="slide active" id="s1">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="slide-tag">Problem Scenario</div>
+          <h1 class="slide-h1">Why We Built DevRev SupportIQ</h1>
+          <p class="slide-sub">Field sales reps can't process orders in dead-zone environments — costing enterprises real revenue every day.</p>
         </div>
+        <div class="slide-body">
+          <!-- Hero KPIs -->
+          <div class="kpi-row">
+            <div class="kpi-card kpi-red">
+              <div class="kpi-label">Revenue at Risk</div>
+              <div class="kpi-value red">$84.5K</div>
+              <div class="kpi-detail">Delayed pipeline from connectivity failures</div>
+            </div>
+            <div class="kpi-card kpi-amber">
+              <div class="kpi-label">Duplicate Orders</div>
+              <div class="kpi-value amber">$46.2K</div>
+              <div class="kpi-detail">Created by reconnection packet drops</div>
+            </div>
+            <div class="kpi-card kpi-primary">
+              <div class="kpi-label">Affected Reps</div>
+              <div class="kpi-value primary">65</div>
+              <div class="kpi-detail">Apex Wholesale field team impacted</div>
+            </div>
+            <div class="kpi-card kpi-emerald">
+              <div class="kpi-label">Resolution Target</div>
+              <div class="kpi-value emerald">&lt;24h</div>
+              <div class="kpi-detail">SLA for P0-Blocker enterprise tickets</div>
+            </div>
+          </div>
 
-        <div class="deck-card border-blue">
-          <div class="deck-card-header">
-            <span class="card-title">🎯 The Objective: DevRev SupportIQ</span>
-            <span class="pill pill-green">Prototype Solution</span>
-          </div>
-          <div class="card-body">
-            <p><strong>What We Built:</strong> A responsive, high-performance customer support portal where teams can:</p>
-            <ul>
-              <li><strong>Log & Triage Records:</strong> Capture issues with customer tier, revenue exposure, and priority.</li>
-              <li><strong>Track Lifecycles:</strong> Real-time status updates (<code>Open</code> → <code>In Progress</code> → <code>Resolved</code>).</li>
-              <li><strong>Audit Mutations:</strong> Immutable activity logging capturing who made each change and when.</li>
-              <li><strong>AI-Powered Triage:</strong> Automated sentiment detection, executive summaries, and intelligent roadmap linking.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+          <!-- Two Column: Crisis → Solution -->
+          <div class="grid-2">
+            <div class="card glow-red">
+              <div class="card-top">
+                <div class="card-icon bg-red">🔥</div>
+                <div>
+                  <div class="card-title">The Crisis</div>
+                </div>
+                <span class="pill pill-red">Critical</span>
+              </div>
+              <div class="card-body">
+                <ul>
+                  <li>Reps in <strong>steel-reinforced walk-in freezers</strong> with zero cellular signal</li>
+                  <li>Checkout freezes with <code style="color:#f87171">HTTP 504 Gateway Timeout</code></li>
+                  <li>Reconnection triggers <strong>duplicate order creation</strong> — 38 incidents last quarter</li>
+                  <li>Support overwhelmed; PM & engineering <strong>blind to revenue impact</strong></li>
+                </ul>
+              </div>
+            </div>
 
-    <!-- SLIDE 2: System Architecture -->
-    <section class="slide" id="slide-2">
-      <div class="slide-category">Step 2: System Architecture</div>
-      <h1 class="slide-title">System Architecture: Zero-Build Full-Stack Design</h1>
-      <p class="slide-subtitle">A lightweight, decoupled three-tier architecture prioritizing lightning-fast rendering, zero npm vulnerabilities, and ACID reliability.</p>
-      
-      <div class="deck-grid-3">
-        <div class="deck-card">
-          <div class="deck-card-header">
-            <span class="card-title">🖥️ 1. Frontend Layer</span>
-            <span class="pill pill-green">Sub-50ms Load</span>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>Pure Vanilla ES6 + HTML5:</strong> Single Page Application (SPA) architecture with zero webpack/node build step.</li>
-              <li><strong>Modern CSS3 Design System:</strong> Dark-mode glassmorphic theme using native CSS custom properties.</li>
-              <li><strong>State & Debouncing:</strong> 250ms search debouncing, real-time modal managers, and toast notifications.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="deck-card highlight">
-          <div class="deck-card-header">
-            <span class="card-title">⚙️ 2. Backend API Layer</span>
-            <span class="pill pill-blue">Python Flask REST</span>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>RESTful API Contracts:</strong> Dual endpoints supporting both <code>/records</code> and <code>/api/records</code>.</li>
-              <li><strong>Security & Validation:</strong> Input payload sanitization, CORS enabled, and role-based audit headers.</li>
-              <li><strong>AI Engine Integration:</strong> Endpoints for automated triage (<code>/ai-triage</code>) and natural language copilot (<code>/ai/chat</code>).</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="deck-card">
-          <div class="deck-card-header">
-            <span class="card-title">🗄️ 3. Database Layer</span>
-            <span class="pill pill-amber">SQLite ACID</span>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>Zero-Config SQLite3:</strong> Embedded ACID relational database requiring zero external infrastructure.</li>
-              <li><strong>Relational Audit Trail:</strong> Foreign-key activity log table capturing all state mutations.</li>
-              <li><strong>Auto-Seeding Engine:</strong> Instantly initializes 6 high-value enterprise records upon first boot.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 3: Data Model -->
-    <section class="slide" id="slide-3">
-      <div class="slide-category">Step 3: Data Model</div>
-      <h1 class="slide-title">Data Model & Schema: Engineered for Customer & Product Context</h1>
-      <p class="slide-subtitle">Structured entities combining operational ticketing, customer financial exposure, and automated AI metadata.</p>
-      
-      <div class="deck-grid-2">
-        <div class="deck-card">
-          <div class="deck-card-header">
-            <span class="card-title">📋 Entity: `records` (Primary Support Record)</span>
-            <span class="pill pill-blue">Core Entity</span>
-          </div>
-          <div class="card-body">
-            <div class="code-box">
-• id: INTEGER PRIMARY KEY AUTOINCREMENT
-• ticket_key: TEXT UNIQUE (e.g. 'TICK-101')
-• title & description: TEXT NOT NULL
-• customer_name: TEXT NOT NULL
-• customer_tier: 'Enterprise' | 'Mid-Market' | 'Growth'
-• category: 'Bug' | 'Escalation' | 'Feature Request'
-• priority: 'P0-Blocker' | 'P1-High' | 'P2-Med' | 'P3-Low'
-• status: 'Open' | 'In Progress' | 'Resolved' | 'Closed'
-• assigned_engineer: TEXT (Technical Lead)
-• impact_revenue: REAL ($ Value of ARR at risk)
-• ai_sentiment: 'Positive' | 'Neutral' | 'Negative' | 'Frustrated'
-• ai_summary & ai_recommended_action: TEXT
-• created_at & updated_at: ISO-8601 UTC
+            <div class="card glow-emerald">
+              <div class="card-top">
+                <div class="card-icon bg-emerald">🎯</div>
+                <div>
+                  <div class="card-title">SupportIQ Solution</div>
+                </div>
+                <span class="pill pill-emerald">Built in Hours</span>
+              </div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>Log & triage</strong> issues with customer tier, revenue exposure, and priority</li>
+                  <li><strong>Track lifecycle</strong>: Open → In Progress → Resolved → Closed</li>
+                  <li><strong>Immutable audit trail</strong> — who changed what, when</li>
+                  <li><strong>AI-powered triage</strong> — sentiment, summaries, roadmap linking</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="deck-card border-green">
-          <div class="deck-card-header">
-            <span class="card-title">📜 Entity: `activity_logs` (Audit History)</span>
-            <span class="pill pill-green">Immutable Log</span>
-          </div>
-          <div class="card-body">
-            <div class="code-box">
-• id: INTEGER PRIMARY KEY AUTOINCREMENT
-• record_id: INTEGER (FOREIGN KEY -> records.id)
-• action: 'CREATED' | 'UPDATED' | 'STATUS_CHANGE'
-• details: TEXT (Field diff summary)
-• actor: TEXT (e.g. 'Alex Rivera (Staff SE)')
-• timestamp: ISO-8601 UTC
+    <!-- ─── SLIDE 2 : ARCHITECTURE ─── -->
+    <section class="slide" id="s2">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="slide-tag">System Architecture</div>
+          <h1 class="slide-h1">Zero-Build, Full-Stack Design</h1>
+          <p class="slide-sub">Three-tier decoupled architecture: instant load times, zero npm vulnerabilities, ACID reliability.</p>
+        </div>
+        <div class="slide-body">
+          <div class="grid-2-1">
+            <!-- Architecture Diagram -->
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <div class="arch-layer">
+                <div class="arch-layer-icon fe">🖥️</div>
+                <div class="arch-layer-info">
+                  <div class="arch-layer-title">Frontend — Vanilla SPA</div>
+                  <div class="arch-layer-desc">Pure HTML5 + ES6 JavaScript. No React, no webpack, no npm. Sub-50ms initial render with glassmorphic dark-mode design tokens.</div>
+                  <div class="arch-layer-tech">
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">ES6</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">Zero Build</span>
+                  </div>
+                </div>
+              </div>
+              <div class="arch-connector"><div class="arch-connector-line"></div></div>
+              <div class="arch-layer" style="border-color:rgba(99,102,241,0.2)">
+                <div class="arch-layer-icon be">⚙️</div>
+                <div class="arch-layer-info">
+                  <div class="arch-layer-title">Backend — Python Flask REST API</div>
+                  <div class="arch-layer-desc">RESTful endpoints for CRUD + AI triage & copilot chat. Dual routing (/records & /api/records), CORS, input validation, role-based audit headers.</div>
+                  <div class="arch-layer-tech">
+                    <span class="tech-tag">Python 3</span>
+                    <span class="tech-tag">Flask</span>
+                    <span class="tech-tag">REST JSON</span>
+                    <span class="tech-tag">CORS</span>
+                  </div>
+                </div>
+              </div>
+              <div class="arch-connector"><div class="arch-connector-line"></div></div>
+              <div class="arch-layer">
+                <div class="arch-layer-icon db">🗄️</div>
+                <div class="arch-layer-info">
+                  <div class="arch-layer-title">Database — SQLite3 ACID Engine</div>
+                  <div class="arch-layer-desc">Embedded single-file database. Full ACID transactions, foreign-key audit trail, auto-seeding on first boot. Zero infrastructure overhead.</div>
+                  <div class="arch-layer-tech">
+                    <span class="tech-tag">SQLite3</span>
+                    <span class="tech-tag">ACID</span>
+                    <span class="tech-tag">Foreign Keys</span>
+                    <span class="tech-tag">Auto-Seed</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p style="margin-top: 6px;"><strong>Why This Matters:</strong></p>
-            <ul>
-              <li><strong>Accountability:</strong> Full traceability of who changed priorities, assigned leads, or resolved tickets.</li>
-              <li><strong>Revenue Prioritization:</strong> <code>impact_revenue</code> allows teams to sort backlogs by customer financial risk rather than arbitrary squeaky wheels.</li>
-            </ul>
+
+            <!-- Performance Metrics -->
+            <div class="card glow-primary" style="justify-content:center;">
+              <div class="card-title" style="margin-bottom:8px;">⚡ Performance Benchmarks</div>
+              <div class="bar-chart">
+                <div class="bar-item">
+                  <span class="bar-label">Page Load</span>
+                  <div class="bar-track"><div class="bar-fill cyan" style="width:15%">&lt;50ms</div></div>
+                </div>
+                <div class="bar-item">
+                  <span class="bar-label">API Response</span>
+                  <div class="bar-track"><div class="bar-fill emerald" style="width:20%">&lt;80ms</div></div>
+                </div>
+                <div class="bar-item">
+                  <span class="bar-label">Build Time</span>
+                  <div class="bar-track"><div class="bar-fill primary" style="width:2%">0ms</div></div>
+                </div>
+                <div class="bar-item">
+                  <span class="bar-label">npm Vulns</span>
+                  <div class="bar-track"><div class="bar-fill emerald" style="width:2%">0</div></div>
+                </div>
+                <div class="bar-item">
+                  <span class="bar-label">Docker Size</span>
+                  <div class="bar-track"><div class="bar-fill amber" style="width:25%">~45MB</div></div>
+                </div>
+              </div>
+              <div class="impact-quote" style="margin-top:12px;font-size:12px;">
+                "Zero build failures during customer demos — the prototype works everywhere, instantly."
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 4: Demo Walkthrough -->
-    <section class="slide" id="slide-4">
-      <div class="slide-category">Step 4: Demo Walkthrough</div>
-      <h1 class="slide-title">Interactive Demo: Core Workflows in Action</h1>
-      <p class="slide-subtitle">Demonstrating record creation, multi-dimensional search & filtering, live status updates, and AI triage.</p>
-      
-      <div class="deck-grid-3">
-        <div class="deck-card border-blue">
-          <div class="deck-card-header">
-            <span class="card-title">1. View & Filter Records</span>
-            <span class="pill pill-blue">List View</span>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>Live Metrics Header:</strong> Instantly summarizes Total Records, Open, In Progress, P0 Blockers, and Revenue at Risk ($84.5k).</li>
-              <li><strong>Multi-Field Search:</strong> Real-time filtering across titles, customers, descriptions, and ticket keys.</li>
-              <li><strong>Priority & Status Dropdowns:</strong> Zero-latency client-side query composition.</li>
-            </ul>
-          </div>
+    <!-- ─── SLIDE 3 : DATA MODEL ─── -->
+    <section class="slide" id="s3">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="slide-tag">Data Model & Schema</div>
+          <h1 class="slide-h1">Engineered for Customer & Product Context</h1>
+          <p class="slide-sub">Structured entities combining operational ticketing, customer financial exposure, and automated AI metadata.</p>
         </div>
+        <div class="slide-body">
+          <div class="grid-2">
+            <!-- Records Entity -->
+            <div class="card glow-primary">
+              <div class="card-top">
+                <div class="card-icon bg-primary">📋</div>
+                <div class="card-title">records — Primary Support Entity</div>
+                <span class="pill pill-primary">14 Columns</span>
+              </div>
+              <div class="code-box" style="flex:1;">
+<span style="color:#818cf8">id</span>          INTEGER   PRIMARY KEY AUTOINCREMENT
+<span style="color:#818cf8">ticket_key</span>   TEXT      UNIQUE  (e.g. 'TICK-101')
+<span style="color:#818cf8">title</span>        TEXT      NOT NULL
+<span style="color:#818cf8">description</span>  TEXT      NOT NULL
+<span style="color:#818cf8">customer_name</span> TEXT     NOT NULL
+<span style="color:#818cf8">customer_tier</span> TEXT     Enterprise | Mid-Market | Growth
+<span style="color:#818cf8">category</span>     TEXT      Bug | Escalation | Feature Req
+<span style="color:#818cf8">priority</span>     TEXT      P0-Blocker → P3-Low
+<span style="color:#818cf8">status</span>       TEXT      Open → In Progress → Resolved
+<span style="color:#818cf8">assigned_eng</span> TEXT      Technical lead
+<span style="color:#f87171">impact_revenue</span> REAL    <strong style="color:#fbbf24">$ ARR at risk</strong>
+<span style="color:#34d399">ai_sentiment</span> TEXT      Frustrated | Negative | Neutral
+<span style="color:#34d399">ai_summary</span>   TEXT      AI executive digest
+<span style="color:#34d399">ai_action</span>    TEXT      Recommended roadmap action
+              </div>
+            </div>
 
-        <div class="deck-card border-green">
-          <div class="deck-card-header">
-            <span class="card-title">2. Create New Record</span>
-            <span class="pill pill-green">Create Form</span>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>Validated Modal Form:</strong> Captures title, customer, tier, category, priority, assignee, and estimated revenue impact.</li>
-              <li><strong>Automatic Keying:</strong> Sequential generation of human-readable ticket identifiers (e.g., <code>TICK-107</code>).</li>
-              <li><strong>Initial Audit Log:</strong> Automatically logs creation event with active actor identity.</li>
-            </ul>
-          </div>
-        </div>
+            <!-- Activity Logs + Why It Matters -->
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="card glow-emerald">
+                <div class="card-top">
+                  <div class="card-icon bg-emerald">📜</div>
+                  <div class="card-title">activity_logs — Immutable Audit</div>
+                  <span class="pill pill-emerald">Append-Only</span>
+                </div>
+                <div class="code-box">
+<span style="color:#34d399">record_id</span>   FK → records.id
+<span style="color:#34d399">action</span>      CREATED | UPDATED | STATUS_CHANGE
+<span style="color:#34d399">details</span>     Field mutation diff
+<span style="color:#34d399">actor</span>       'Alex Rivera (Staff SE)'
+<span style="color:#34d399">timestamp</span>   ISO-8601 UTC
+                </div>
+              </div>
 
-        <div class="deck-card border-amber">
-          <div class="deck-card-header">
-            <span class="card-title">3. Status Update & AI Triage</span>
-            <span class="pill pill-amber">Detail View</span>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>One-Click Status Pills:</strong> Update status from <code>Open</code> to <code>In Progress</code> or <code>Resolved</code> via <code>PUT /records/:id</code>.</li>
-              <li><strong>Live Audit Timeline:</strong> Renders complete mutation history with timestamps and actors.</li>
-              <li><strong>AI Triage Engine:</strong> Single-click re-evaluation of sentiment, executive digest, and recommended roadmap action.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 5: How AI/CRM Systems Use This Data -->
-    <section class="slide" id="slide-5">
-      <div class="slide-category">Step 5: DevRev & AI Synergy</div>
-      <h1 class="slide-title">How AI & CRM Systems (DevRev) Leverage This Data</h1>
-      <p class="slide-subtitle">Transforming passive support tickets into active product intelligence and revenue-protecting roadmap items.</p>
-      
-      <div class="deck-grid-2">
-        <div class="deck-card highlight">
-          <div class="deck-card-header">
-            <span class="card-title">🤖 1. AI Clustering & Defect Detection</span>
-            <span class="pill pill-green">Semantic AI</span>
-          </div>
-          <div class="card-body">
-            <p><strong>The Opportunity:</strong> In large support operations, 30 different customers report the same bug using completely different words.</p>
-            <p><strong>How DevRev Solves It:</strong></p>
-            <ul>
-              <li>Vector embedding models analyze ticket descriptions and cluster related issues.</li>
-              <li>Automatically detects that 14 different complaints all trace to <em>cellular TCP ACK drops during reconnect</em>.</li>
-              <li>Deduplicates engineering effort and links all 14 customer accounts to a single Jira issue / PRD work item.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="deck-card border-amber">
-          <div class="deck-card-header">
-            <span class="card-title">💼 2. Revenue-Driven Roadmap Prioritization</span>
-            <span class="pill pill-amber">CRM & ARR Alignment</span>
-          </div>
-          <div class="card-body">
-            <p><strong>The Opportunity:</strong> Engineering teams frequently prioritize bugs based on loudness or ticket count rather than financial impact.</p>
-            <p><strong>How DevRev Solves It:</strong></p>
-            <ul>
-              <li>DevRev ties customer support tickets directly to CRM accounts and contract ARR ($420k).</li>
-              <li>Product managers see that a single P0 blocker threatens $84.5k in active deals.</li>
-              <li>Sprints are prioritized to protect net revenue retention (NRR) and prevent enterprise churn.</li>
-            </ul>
+              <div class="card glow-amber" style="flex:1;">
+                <div class="card-top">
+                  <div class="card-icon bg-amber">💡</div>
+                  <div class="card-title">Why This Design Matters</div>
+                </div>
+                <div class="card-body">
+                  <ul>
+                    <li><strong class="hl-amber">impact_revenue</strong> ties technical bugs directly to customer ARR — product managers see dollar impact, not just ticket counts</li>
+                    <li><strong class="hl-emerald">activity_logs</strong> provides full traceability: who changed priorities, assigned leads, or resolved tickets — and when</li>
+                    <li><strong class="hl">ai_sentiment</strong> + <strong class="hl">ai_summary</strong> enable automated executive escalation before customer churn</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 6: Technical Thinking & Rapid Prototyping -->
-    <section class="slide" id="slide-6">
-      <div class="slide-category">Step 6: Evaluation & Reflection</div>
-      <h1 class="slide-title">Technical Thinking, Rapid Prototyping & AI Tools</h1>
-      <p class="slide-subtitle">Reflecting on architectural trade-offs, AI assistant utilization, and future production extensibility.</p>
-      
-      <div class="deck-grid-3">
-        <div class="deck-card border-blue">
-          <div class="deck-card-header">
-            <span class="card-title">🧠 Technical Thinking</span>
-            <span class="pill pill-blue">Pragmatic Design</span>
+    <!-- ─── SLIDE 4 : DEMO WALKTHROUGH ─── -->
+    <section class="slide" id="s4">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="slide-tag">Interactive Demo</div>
+          <h1 class="slide-h1">Core Workflows in Action</h1>
+          <p class="slide-sub">Live demonstration of record creation, multi-dimensional search, status lifecycle, and AI-powered triage.</p>
+        </div>
+        <div class="slide-body">
+          <!-- Workflow Flow -->
+          <div class="flow-steps">
+            <div class="flow-step" style="border-color:rgba(34,211,238,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="flow-num">1</div>
+                <div class="flow-title">Dashboard & Filter</div>
+              </div>
+              <div class="flow-desc">
+                Live KPI bar: Total records, Open count, P0 Blockers, <strong class="hl-red">$84.5K at risk</strong>. Real-time multi-field search with 250ms debouncing across titles, customers, and ticket keys.
+              </div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="border-color:rgba(16,185,129,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="flow-num">2</div>
+                <div class="flow-title">Create Record</div>
+              </div>
+              <div class="flow-desc">
+                Validated modal capturing title, customer, tier, category, priority, assignee, and <strong class="hl-amber">revenue exposure</strong>. Auto-generates sequential keys (TICK-107).
+              </div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="border-color:rgba(245,158,11,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="flow-num">3</div>
+                <div class="flow-title">Update & Audit</div>
+              </div>
+              <div class="flow-desc">
+                One-click status pills: Open → In Progress → Resolved. Every mutation logged with <strong class="hl-emerald">actor + timestamp</strong> in the immutable audit trail.
+              </div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step" style="border-color:rgba(99,102,241,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="flow-num">4</div>
+                <div class="flow-title">AI Triage</div>
+              </div>
+              <div class="flow-desc">
+                One-click AI engine: <strong class="hl">sentiment detection</strong>, executive summary, and roadmap action recommendation. Plus interactive copilot chat.
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>Zero-Build Philosophy:</strong> Chose vanilla JS over React/Next.js to eliminate build steps, npm vulnerabilities, and load latency.</li>
-              <li><strong>ACID Reliability:</strong> Embedded SQLite ensures full transactional integrity and portable single-file deployment.</li>
-              <li><strong>Dual Route Design:</strong> Supports both <code>/records</code> and <code>/api/records</code> for seamless API client compatibility.</li>
-            </ul>
+
+          <!-- Revenue at Risk Breakdown -->
+          <div class="grid-2">
+            <div class="card glow-red">
+              <div class="card-top">
+                <div class="card-icon bg-red">📊</div>
+                <div class="card-title">Revenue at Risk by Customer</div>
+              </div>
+              <div class="bar-chart" style="flex:1;">
+                <div class="bar-item">
+                  <span class="bar-label">Apex Wholesale</span>
+                  <div class="bar-track"><div class="bar-fill red" style="width:85%">$42,000</div></div>
+                </div>
+                <div class="bar-item">
+                  <span class="bar-label">Meridian Health</span>
+                  <div class="bar-track"><div class="bar-fill amber" style="width:50%">$22,500</div></div>
+                </div>
+                <div class="bar-item">
+                  <span class="bar-label">TechStart Inc</span>
+                  <div class="bar-track"><div class="bar-fill primary" style="width:30%">$12,000</div></div>
+                </div>
+                <div class="bar-item">
+                  <span class="bar-label">CloudNine SaaS</span>
+                  <div class="bar-track"><div class="bar-fill cyan" style="width:20%">$8,000</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card glow-primary">
+              <div class="card-top">
+                <div class="card-icon bg-primary">🤖</div>
+                <div class="card-title">AI Triage Output Example</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <span class="pill pill-red">Frustrated</span>
+                  <span style="font-size:12px;color:var(--text-secondary);">Sentiment detected from ticket language</span>
+                </div>
+                <div class="code-box" style="flex:1;font-size:10.5px;">
+<span style="color:#f87171;">EXECUTIVE SUMMARY:</span>
+Enterprise customer Apex Wholesale experiencing
+checkout failures in connectivity dead zones.
+38 duplicate orders created. $42K ARR at risk.
+
+<span style="color:#34d399;">RECOMMENDED ACTION:</span>
+Link to PRD: Offline Order Processing (OM-PRD-001).
+Assign to backend team for SQLite WAL migration.
+Escalate to VP Engineering for sprint prioritization.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="deck-card border-green">
-          <div class="deck-card-header">
-            <span class="card-title">⚡ AI Tooling Leveraged</span>
-            <span class="pill pill-green">Codex / Cursor / Claude</span>
+    <!-- ─── SLIDE 5 : DEVREV AI SYNERGY ─── -->
+    <section class="slide" id="s5">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="slide-tag">DevRev & AI Synergy</div>
+          <h1 class="slide-h1">How AI & CRM Systems Leverage This Data</h1>
+          <p class="slide-sub">Transforming passive support tickets into active product intelligence and revenue-protecting roadmap items.</p>
+        </div>
+        <div class="slide-body">
+          <!-- Top KPI Impact -->
+          <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="kpi-card kpi-primary">
+              <div class="kpi-label">Ticket Clusters Found</div>
+              <div class="kpi-value primary">14 → 1</div>
+              <div class="kpi-detail">Disparate reports mapped to single root cause</div>
+            </div>
+            <div class="kpi-card kpi-amber">
+              <div class="kpi-label">Total ARR Protected</div>
+              <div class="kpi-value amber">$420K</div>
+              <div class="kpi-detail">Customer contracts linked to support tickets</div>
+            </div>
+            <div class="kpi-card kpi-emerald">
+              <div class="kpi-label">Triage Time Saved</div>
+              <div class="kpi-value emerald">87%</div>
+              <div class="kpi-detail">vs. manual support team classification</div>
+            </div>
           </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>Rapid Schema Generation:</strong> Used AI assistants to draft the relational SQLite schema and foreign key audit tables in seconds.</li>
-              <li><strong>Realistic Seed Data:</strong> Generated authentic enterprise context (ARR figures, stack traces, HTTP status codes).</li>
-              <li><strong>AI Copilot Integration:</strong> Built natural language conversational query engine over the support records.</li>
-            </ul>
+
+          <!-- Three capability cards -->
+          <div class="grid-3">
+            <div class="card glow-primary">
+              <div class="card-top">
+                <div class="card-icon bg-primary">🔍</div>
+                <div class="card-title">AI Clustering</div>
+              </div>
+              <div class="card-body">
+                <p><strong>30 different customers</strong> report the same bug with completely different phrasing.</p>
+                <ul>
+                  <li>Vector embeddings cluster ticket descriptions semantically</li>
+                  <li>14 complaints auto-mapped to <strong class="hl-cyan">cellular TCP ACK drops</strong></li>
+                  <li>Deduplicates engineering effort by linking all accounts to one work item</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card glow-amber">
+              <div class="card-top">
+                <div class="card-icon bg-amber">💰</div>
+                <div class="card-title">Revenue Prioritization</div>
+              </div>
+              <div class="card-body">
+                <p>Engineering teams often prioritize by <strong>loudness</strong> — not financial impact.</p>
+                <ul>
+                  <li>DevRev links tickets to <strong class="hl-amber">CRM accounts + contract ARR</strong></li>
+                  <li>PM sees a P0 blocker threatens <strong class="hl-red">$84.5K</strong> in active deals</li>
+                  <li>Sprints reprioritized to protect net revenue retention</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card glow-cyan">
+              <div class="card-top">
+                <div class="card-icon bg-cyan">🔗</div>
+                <div class="card-title">PRD & Epic Linkage</div>
+              </div>
+              <div class="card-body">
+                <p>Eliminates the <strong>wall between Support and Engineering</strong>.</p>
+                <ul>
+                  <li>Customer tickets linked directly to Developer Epics and PRDs</li>
+                  <li>Support reps notified <strong class="hl-emerald">automatically when code ships</strong></li>
+                  <li>Closed-loop from customer complaint → shipped fix → account saved</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="impact-quote">
+            "DevRev's AI doesn't just organize tickets — it protects revenue by connecting customer pain directly to the engineering sprint backlog."
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="deck-card border-amber">
-          <div class="deck-card-header">
-            <span class="card-title">🚀 Production Roadmap</span>
-            <span class="pill pill-amber">Extensibility</span>
+    <!-- ─── SLIDE 6 : TECH THINKING & WRAP ─── -->
+    <section class="slide" id="s6">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="slide-tag">Technical Reflection & Close</div>
+          <h1 class="slide-h1">Technical Thinking, AI Tools & Extensibility</h1>
+          <p class="slide-sub">Pragmatic trade-offs, AI-accelerated development, and a clear path to production.</p>
+        </div>
+        <div class="slide-body">
+          <div class="grid-3">
+            <div class="card glow-cyan">
+              <div class="card-top">
+                <div class="card-icon bg-cyan">🧠</div>
+                <div class="card-title">Technical Decisions</div>
+              </div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>Zero-Build Philosophy:</strong> Vanilla JS over React/Next.js — zero build steps, zero npm CVEs, instant demo reliability</li>
+                  <li><strong>ACID First:</strong> SQLite ensures transactional integrity in a portable single-file deployment</li>
+                  <li><strong>Dual API Routes:</strong> Both <code style="color:var(--accent-cyan)">/records</code> and <code style="color:var(--accent-cyan)">/api/records</code> for universal client compatibility</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card glow-primary">
+              <div class="card-top">
+                <div class="card-icon bg-pink">⚡</div>
+                <div class="card-title">AI Tools Leveraged</div>
+              </div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>Schema Generation:</strong> AI drafted relational SQLite schema + FK constraints in minutes</li>
+                  <li><strong>Realistic Seed Data:</strong> Generated authentic enterprise ARR, stack traces, and HTTP error codes</li>
+                  <li><strong>AI Copilot Engine:</strong> Built NL conversational query engine over live support records</li>
+                </ul>
+                <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;">
+                  <span class="tech-tag">Cursor</span>
+                  <span class="tech-tag">Claude</span>
+                  <span class="tech-tag">Codex</span>
+                  <span class="tech-tag">Antigravity</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card glow-emerald">
+              <div class="card-top">
+                <div class="card-icon bg-emerald">🚀</div>
+                <div class="card-title">Production Roadmap</div>
+              </div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>1-Click Deploy:</strong> Includes Dockerfile, Procfile, and render.yaml for instant cloud deployment</li>
+                  <li><strong>PostgreSQL Path:</strong> Decoupled data layer allows seamless migration to managed Postgres</li>
+                  <li><strong>WebSocket Upgrade:</strong> Architecture supports real-time multi-agent collaboration and live ticket streaming</li>
+                </ul>
+                <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;">
+                  <span class="tech-tag">Docker</span>
+                  <span class="tech-tag">Render</span>
+                  <span class="tech-tag">PostgreSQL</span>
+                  <span class="tech-tag">WebSockets</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <ul>
-              <li><strong>Containerized Deployment:</strong> Packaged with <code>Dockerfile</code> and <code>Procfile</code> for 1-click cloud deployment on Render/Railway.</li>
-              <li><strong>PostgreSQL Migration:</strong> Database adapter pattern allows seamless switch to managed Postgres.</li>
-              <li><strong>Real-Time WebSockets:</strong> Live multi-agent collaboration and instant ticket updates.</li>
-            </ul>
+
+          <!-- Closing KPIs -->
+          <div class="kpi-row" style="grid-template-columns: repeat(5, 1fr);">
+            <div class="kpi-card kpi-cyan">
+              <div class="kpi-label">Total Dev Time</div>
+              <div class="kpi-value cyan" style="font-size:clamp(22px,2vw,32px);">~4 hrs</div>
+            </div>
+            <div class="kpi-card kpi-primary">
+              <div class="kpi-label">Lines of Code</div>
+              <div class="kpi-value primary" style="font-size:clamp(22px,2vw,32px);">~1,200</div>
+            </div>
+            <div class="kpi-card kpi-emerald">
+              <div class="kpi-label">API Endpoints</div>
+              <div class="kpi-value emerald" style="font-size:clamp(22px,2vw,32px);">8</div>
+            </div>
+            <div class="kpi-card kpi-amber">
+              <div class="kpi-label">Seed Records</div>
+              <div class="kpi-value amber" style="font-size:clamp(22px,2vw,32px);">6</div>
+            </div>
+            <div class="kpi-card kpi-red">
+              <div class="kpi-label">External Deps</div>
+              <div class="kpi-value red" style="font-size:clamp(22px,2vw,32px);">2</div>
+              <div class="kpi-detail">Flask + Flask-CORS only</div>
+            </div>
+          </div>
+
+          <div class="impact-quote">
+            "AI assistants let me focus on system thinking, domain design, and business value — not boilerplate. Thank you — I look forward to your questions!"
           </div>
         </div>
       </div>
@@ -724,159 +1088,100 @@
 
   </main>
 
-  <!-- Speaker Notes Bar -->
-  <footer class="speaker-notes-drawer">
-    <span class="speaker-badge">Speaking Cue</span>
-    <span class="speaker-text" id="speakerNoteText">
-      <strong>Slide 1 Cue:</strong> Open with the problem scenario: field sales reps operating in basement walk-in freezers where mobile checkout freezes. Frame the business cost ($84.5k delayed pipeline) before introducing SupportIQ.
-    </span>
-  </footer>
+  <!-- Speaker Notes -->
+  <div class="speaker-bar">
+    <span class="speaker-tag">Cue</span>
+    <span class="speaker-txt" id="speakerTxt">Open with the revenue crisis: $84.5K pipeline at risk from connectivity failures in walk-in freezers. Frame the business cost before introducing SupportIQ.</span>
+  </div>
 
-  <!-- Deck Footer Controls -->
+  <!-- Footer Nav -->
   <div class="deck-footer">
-    <div class="step-dots" id="dotsContainer">
-      <div class="dot-step active" onclick="goToSlide(1)"></div>
-      <div class="dot-step" onclick="goToSlide(2)"></div>
-      <div class="dot-step" onclick="goToSlide(3)"></div>
-      <div class="dot-step" onclick="goToSlide(4)"></div>
-      <div class="dot-step" onclick="goToSlide(5)"></div>
-      <div class="dot-step" onclick="goToSlide(6)"></div>
+    <div class="dots" id="dotsBox">
+      <div class="dot active" onclick="go(1)"></div>
+      <div class="dot" onclick="go(2)"></div>
+      <div class="dot" onclick="go(3)"></div>
+      <div class="dot" onclick="go(4)"></div>
+      <div class="dot" onclick="go(5)"></div>
+      <div class="dot" onclick="go(6)"></div>
     </div>
-    <div class="nav-btn-group">
-      <button class="btn-nav" id="prevBtn" onclick="prevSlide()" disabled>← Previous</button>
-      <button class="btn-nav primary" id="nextBtn" onclick="nextSlide()">Next Slide →</button>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>← Previous</button>
+      <button class="nav-btn primary-btn" id="nextBtn" onclick="next()">Next →</button>
     </div>
   </div>
 
-  <!-- Full Speaker Script Modal -->
-  <div class="script-modal" id="scriptModal" onclick="closeScriptModal(event)">
-    <div class="script-content" onclick="event.stopPropagation()">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-        <h2 style="font-size: 18px; color: #fff;">🎙️ Full 5-Minute Prototype Walkthrough Script</h2>
-        <button class="btn-header" onclick="closeScriptModal()">✕ Close</button>
+  <!-- Script Modal -->
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px;">
+        <h2 style="font-size:16px;font-weight:800;">🎙️ 5-Minute Walkthrough Script</h2>
+        <button class="h-btn" onclick="closeModal()">✕ Close</button>
       </div>
-      <div style="font-size: 13px; line-height: 1.6; color: #cbd5e1; display: flex; flex-direction: column; gap: 14px;">
-        <p><strong style="color: #818cf8;">Minute 0:00 - 1:00 (Problem Scenario & Value):</strong><br>
-        "Hi everyone! For the Solutions Engineer Rapid Prototype Challenge, I built <strong>DevRev SupportIQ</strong> — a customer support and defect triage portal.<br>
-        Our scenario tackles a real enterprise pain point: field sales reps operating in commercial basement walk-in freezers with zero cellular coverage. When checkout times out, reps are forced onto paper napkins. When they reconnect, dropped network packets cause duplicate orders. That resulted in $84.5k in delayed pipeline and an executive churn threat.<br>
-        We built SupportIQ to give support reps and solutions engineers an agile portal to capture records, track monetary revenue at risk, update ticket statuses, and bridge support tickets directly to product roadmaps."</p>
+      <div style="font-size:13px;line-height:1.6;color:#cbd5e1;display:flex;flex-direction:column;gap:14px;">
+        <p><strong class="hl">0:00 – 1:00 | Problem & Value:</strong><br>
+        "Hi everyone! I built <strong>DevRev SupportIQ</strong> — a customer support and defect triage portal.<br>
+        Our scenario: field sales reps operating in walk-in freezers with zero cellular coverage. Checkout freezes trigger duplicate orders — $84.5K delayed pipeline, executive churn threat.<br>
+        SupportIQ gives teams an agile portal to capture records, track revenue at risk, and bridge support tickets to product roadmaps."</p>
 
-        <p><strong style="color: #818cf8;">Minute 1:00 - 2:00 (Architecture & Data Model):</strong><br>
-        "Architecturally, we chose a zero-build Single Page Application using vanilla HTML5, CSS3, and modern ES6 JavaScript. It loads in under 50ms with zero webpack overhead. The backend is a Python Flask REST service exposing standard endpoints for listing, viewing, creating, and updating records. Data is persisted in an embedded SQLite database with full ACID compliance and relational activity logs that capture every state change with immutable auditability."</p>
+        <p><strong class="hl">1:00 – 2:00 | Architecture & Data Model:</strong><br>
+        "We chose a zero-build SPA: vanilla HTML5, CSS3, ES6 — loads in under 50ms, zero webpack overhead.<br>
+        Backend: Python Flask REST API. Data: embedded SQLite with ACID compliance and immutable activity logs tracking every state change."</p>
 
-        <p><strong style="color: #818cf8;">Minute 2:00 - 3:30 (Live Prototype Demo):</strong><br>
-        "Let's look at the working prototype. On the main dashboard, we have real-time metrics showing open issues, P0 blockers, and total revenue at risk. Users can search across titles, customers, or keys, with instant filtering.<br>
-        Clicking 'New Support Record' opens our validated modal form, auto-generating a sequential ticket key like TICK-107.<br>
-        In the detail view, support reps can update statuses from Open to In Progress or Resolved with a single click, instantly writing to our audit log.<br>
-        And as a bonus, we built an AI Triage Engine that detects sentiment, generates an executive digest, and recommends next steps, plus an interactive AI Copilot drawer for natural language portfolio queries."</p>
+        <p><strong class="hl">2:00 – 3:30 | Live Demo:</strong><br>
+        "On the dashboard: real-time KPIs — open issues, P0 blockers, $84.5K revenue at risk. Multi-field search with instant filtering.<br>
+        'New Support Record' opens a validated modal with auto-generated ticket keys.<br>
+        Detail view: 1-click status updates, full audit timeline, AI Triage engine for sentiment + executive digest, plus an interactive AI Copilot drawer."</p>
 
-        <p><strong style="color: #818cf8;">Minute 3:30 - 5:00 (DevRev AI Synergy & Rapid Build Process):</strong><br>
-        "Now, how would a system like DevRev interact with this data?<br>
-        First, DevRev uses semantic AI clustering to group 30 different customer complaints into a single root defect. Second, it connects customer tickets directly to Developer Epics and PRDs. And third, it links support issues to customer ARR, allowing engineering leaders to prioritize sprint fixes based on real revenue impact.<br>
-        Using AI assistants like Cursor and Claude, we scaffolded this full-stack application and seed data in a matter of hours.<br>
-        Thank you, and I look forward to your questions!"</p>
+        <p><strong class="hl">3:30 – 5:00 | DevRev AI Synergy & Close:</strong><br>
+        "How would DevRev use this data? First — semantic AI clustering groups 30 different complaints into one root defect. Second — tickets link to Developer Epics and PRDs. Third — CRM ARR linkage lets leadership prioritize sprints by revenue impact.<br>
+        Built with AI assistants (Cursor, Claude) in hours. Thank you — questions welcome!"</p>
       </div>
     </div>
   </div>
 
-  <script>
-    let currentSlide = 1;
-    const totalSlides = 6;
+</div>
 
-    const speakerNotes = [
-      "Slide 1 Cue: Open with the problem scenario: field sales reps operating in basement walk-in freezers where mobile checkout freezes. Frame the business cost ($84.5k delayed pipeline) before introducing SupportIQ.",
-      "Slide 2 Cue: Walk through the 3-tier architecture: Vanilla ES6 frontend (sub-50ms load), Python Flask REST service, and embedded SQLite database.",
-      "Slide 3 Cue: Explain the relational data model: records table (with ARR tagging and AI fields) and immutable activity_logs table for audit tracking.",
-      "Slide 4 Cue: Highlight the core demo flows: live KPI metrics, search filtering, modal creation, 1-click status updates, and the AI Triage engine.",
-      "Slide 5 Cue: Deliver the DevRev value vision: semantic AI clustering, linking tickets directly to PRD work items, and revenue-driven sprint prioritization.",
-      "Slide 6 Cue: Conclude with reflection on technical thinking (zero-build trade-offs), AI tool usage (Cursor/Claude acceleration), and cloud deployment readiness."
-    ];
+<script>
+  let cur = 1;
+  const total = 6;
+  const notes = [
+    "Open with the revenue crisis: $84.5K pipeline at risk from connectivity failures in walk-in freezers. Frame the business cost before introducing SupportIQ.",
+    "Walk through the 3-tier architecture diagram. Highlight zero-build = zero demo failures. Point to the performance benchmarks on the right.",
+    "Explain the two key design choices: impact_revenue ties bugs to ARR, activity_logs provides immutable audit. Show the schema card.",
+    "Demo the 4-step workflow: Dashboard → Create → Update → AI Triage. Highlight the revenue bar chart and AI output example.",
+    "Deliver the DevRev vision: AI clustering (14→1), $420K ARR protected, PRD linkage. This is the 'system thinking' slide.",
+    "Conclude with technical trade-offs, AI tool usage, and production extensibility. End with the closing quote."
+  ];
 
-    function updateSlide() {
-      document.querySelectorAll('.slide').forEach((s, idx) => {
-        s.classList.toggle('active', idx + 1 === currentSlide);
-      });
+  function update() {
+    document.querySelectorAll('.slide').forEach((s,i) => s.classList.toggle('active', i+1===cur));
+    document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i+1===cur));
+    document.getElementById('slideNum').innerText = `${cur} / ${total}`;
+    document.getElementById('progressBar').style.width = `${(cur/total)*100}%`;
+    document.getElementById('prevBtn').disabled = cur===1;
+    document.getElementById('nextBtn').disabled = cur===total;
+    document.getElementById('speakerTxt').innerText = notes[cur-1];
+  }
+  function next() { if(cur<total){cur++;update();} }
+  function prev() { if(cur>1){cur--;update();} }
+  function go(n) { if(n>=1&&n<=total){cur=n;update();} }
 
-      document.querySelectorAll('.dot-step').forEach((d, idx) => {
-        d.classList.toggle('active', idx + 1 === currentSlide);
-      });
+  document.addEventListener('keydown', e => {
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+    else if(e.key>='1'&&e.key<='6') go(parseInt(e.key));
+    else if(e.key==='Home'){e.preventDefault();go(1);}
+    else if(e.key==='End'){e.preventDefault();go(total);}
+    else if(e.key==='f'||e.key==='F') toggleFS();
+    else if(e.key==='Escape') closeModal();
+  });
 
-      document.getElementById('slideIndicator').innerText = `Slide ${currentSlide} of ${totalSlides}`;
-      document.getElementById('progressBar').style.width = `${(currentSlide / totalSlides) * 100}%`;
-      document.getElementById('prevBtn').disabled = currentSlide === 1;
-      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
-
-      document.getElementById('speakerNoteText').innerHTML = `<strong>${speakerNotes[currentSlide - 1].split(':')[0]}:</strong> ${speakerNotes[currentSlide - 1].split(':')[1]}`;
-    }
-
-    function nextSlide() {
-      if (currentSlide < totalSlides) {
-        currentSlide++;
-        updateSlide();
-      }
-    }
-
-    function prevSlide() {
-      if (currentSlide > 1) {
-        currentSlide--;
-        updateSlide();
-      }
-    }
-
-    function goToSlide(n) {
-      if (n >= 1 && n <= totalSlides) {
-        currentSlide = n;
-        updateSlide();
-      }
-    }
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        e.preventDefault();
-        nextSlide();
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        e.preventDefault();
-        prevSlide();
-      } else if (e.key >= '1' && e.key <= '6') {
-        goToSlide(parseInt(e.key));
-      } else if (e.key === 'Home') {
-        e.preventDefault();
-        goToSlide(1);
-      } else if (e.key === 'End') {
-        e.preventDefault();
-        goToSlide(totalSlides);
-      } else if (e.key === 'f' || e.key === 'F') {
-        toggleFullScreen();
-      } else if (e.key === 's' || e.key === 'S') {
-        openScriptModal();
-      } else if (e.key === 'Escape') {
-        closeScriptModal();
-      }
-    });
-
-    // Fullscreen Toggle
-    function toggleFullScreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-          console.log("Fullscreen request error:", err);
-        });
-        document.getElementById('fullscreenIcon').innerText = "🗗";
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-        document.getElementById('fullscreenIcon').innerText = "⛶";
-      }
-    }
-
-    // Modal controls
-    function openScriptModal() {
-      document.getElementById('scriptModal').classList.add('active');
-    }
-    function closeScriptModal() {
-      document.getElementById('scriptModal').classList.remove('active');
-    }
-  </script>
+  function toggleFS() {
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+    else if(document.exitFullscreen) document.exitFullscreen();
+  }
+  function openModal() { document.getElementById('modal').classList.add('active'); }
+  function closeModal(e) { document.getElementById('modal').classList.remove('active'); }
+</script>
 </body>
 </html>
